@@ -36,7 +36,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'account.apps.AccountConfig',
+    'tennis.apps.TennisConfig'
 ]
+
+AUTH_USER_MODEL = 'account.CustomUser'
+AUTHENTICATION_BACKENDS = ['account.backends.EmailBackend']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
