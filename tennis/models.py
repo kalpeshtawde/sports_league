@@ -28,6 +28,17 @@ class League(models.Model):
         null=True,
         blank=True,
     )
+    players = models.ManyToManyField(
+        CustomUser,
+        blank=True,
+        related_name="leagueplayer"
+    )
+    description = models.CharField(
+        db_index=True,
+        max_length=2000,
+        null=True,
+        blank=True,
+    )
     created_at = models.DateTimeField(
         auto_now_add=True
     )
