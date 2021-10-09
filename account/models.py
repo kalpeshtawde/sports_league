@@ -40,6 +40,59 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     username = None
     email = models.EmailField(_('email address'), unique=True)
+
+    GENDER_CHOICES = [
+        ("male", "male"),
+        ("female", "female"),
+        ("unknown", "unknown"),
+    ]
+    gender = models.CharField(
+        max_length=64,
+        choices=GENDER_CHOICES,
+        blank=True,
+        default="unknown",
+        help_text="Gender of the person",
+    )
+    height = models.FloatField(
+        blank=True,
+        null=True,
+        help_text="Height of the person",
+    )
+    level = models.FloatField(
+        blank=True,
+        null=True,
+        help_text="Level of the person",
+    )
+    phone = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        help_text="Phone number of the person",
+    )
+    picture = models.CharField(
+        max_length=36,
+        blank=True,
+        null=True,
+    )
+    city = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        help_text="City of the person",
+    )
+    state = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        help_text="State of the person",
+    )
+    country = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        help_text="Country of the person",
+    )
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 

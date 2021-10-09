@@ -33,6 +33,11 @@ class League(models.Model):
         blank=True,
         related_name="leagueplayer"
     )
+    level = models.FloatField(
+        blank=True,
+        null=True,
+        help_text="Level of the league",
+    )
     description = models.CharField(
         db_index=True,
         max_length=2000,
