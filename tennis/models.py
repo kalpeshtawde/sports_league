@@ -1,6 +1,6 @@
 from django.db import models
 
-from account.models import CustomUser
+from account.models import User
 
 
 class League(models.Model):
@@ -29,7 +29,7 @@ class League(models.Model):
         blank=True,
     )
     players = models.ManyToManyField(
-        CustomUser,
+        User,
         blank=True,
         related_name="leagueplayer"
     )
@@ -49,24 +49,24 @@ class League(models.Model):
 
 class Match(models.Model):
     player_one = models.ForeignKey(
-        CustomUser,
+        User,
         on_delete=models.CASCADE,
         related_name='pone'
     )
     player_two = models.ForeignKey(
-        CustomUser,
+        User,
         on_delete=models.CASCADE,
         related_name='ptwo'
     )
     player_three = models.ForeignKey(
-        CustomUser,
+        User,
         on_delete=models.CASCADE,
         blank=True,
         null=True,
         related_name='pthree'
     )
     player_four = models.ForeignKey(
-        CustomUser,
+        User,
         on_delete=models.CASCADE,
         blank=True,
         null=True,
@@ -93,12 +93,12 @@ class Match(models.Model):
     )
 
     winner_one = models.ForeignKey(
-        CustomUser,
+        User,
         on_delete=models.CASCADE,
         related_name='wone'
     )
     winner_two = models.ForeignKey(
-        CustomUser,
+        User,
         on_delete=models.CASCADE,
         blank=True,
         null=True,

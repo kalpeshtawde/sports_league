@@ -4,7 +4,7 @@ services:
   db:
     image: postgres:11
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - ~/data/db:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -12,7 +12,7 @@ services:
   web:
     build: .
     command: >
-        sh -c "/wait-for-it.sh db:5432 -- python manage.py makemigrations && python manage.py migrate &&
+        sh -c "/wait-for-it.sh db:5432 -- python manage.py migrate &&
               python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code

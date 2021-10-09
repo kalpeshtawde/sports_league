@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'tennis.apps.TennisConfig'
 ]
 
-AUTH_USER_MODEL = 'account.CustomUser'
+AUTH_USER_MODEL = 'account.User'
 AUTHENTICATION_BACKENDS = ['account.backends.EmailBackend']
 
 MIDDLEWARE = [
