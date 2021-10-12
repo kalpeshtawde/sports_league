@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from graphene_django.views import GraphQLView
+from tennis.schema import schema
 
 from account.views import LoginView, RegisterView
 
@@ -22,5 +24,6 @@ from account.views import LoginView, RegisterView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', LoginView.as_view(), name='login'),
-    path('register/', RegisterView.as_view(), name='register')
+    path('register/', RegisterView.as_view(), name='register'),
+    path('graphql', GraphQLView.as_view(graphiql=True, schema=schema)),
 ]

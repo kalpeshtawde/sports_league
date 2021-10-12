@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'account.apps.AccountConfig',
-    'tennis.apps.TennisConfig'
+    'tennis.apps.TennisConfig',
+    'graphene_django'
 ]
 
 AUTH_USER_MODEL = 'account.User'
