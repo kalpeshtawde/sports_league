@@ -12,6 +12,7 @@ User = get_user_model()
 # Remove Group Model from admin. We're not using it.
 admin.site.unregister(Group)
 
+
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     """Define admin model for custom User model with no email field."""

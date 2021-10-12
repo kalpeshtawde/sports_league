@@ -77,7 +77,7 @@ class Match(models.Model):
         null=True,
         related_name='pfour'
     )
-    league = models.OneToOneField(
+    league = models.ForeignKey(
         League,
         on_delete=models.CASCADE,
         blank=True,
