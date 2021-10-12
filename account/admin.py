@@ -4,6 +4,8 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import ugettext_lazy as _
 
+from tennis.models import League, Match
+
 
 User = get_user_model()
 
@@ -30,3 +32,43 @@ class UserAdmin(BaseUserAdmin):
     list_display = ('email', 'first_name', 'last_name', 'is_staff')
     search_fields = ('email', 'first_name', 'last_name')
     ordering = ('email',)
+
+
+@admin.register(League)
+class LeagueAdmin(admin.ModelAdmin):
+    list_display = (
+        'name',
+        'city',
+        'state',
+        'country',
+        'start_date',
+        'end_date',
+        'level',
+    )
+    search_fields = (
+        'name',
+        'city',
+        'state',
+        'country',
+        'players',
+    )
+
+
+@admin.register(Match)
+class MatchAdmin(admin.ModelAdmin):
+    list_display = (
+        'player_one',
+        'player_two',
+        'player_three',
+        'player_four',
+        'league',
+        'winner_one',
+        'winner_two',
+        'start_date',
+        'end_date',
+    )
+    search_fields = (
+        'league',
+        'winner_one',
+        'winner_two',
+    )
