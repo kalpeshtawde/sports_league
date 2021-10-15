@@ -35,11 +35,6 @@ class League(models.Model):
         null=True,
         blank=True,
     )
-    players = models.ManyToManyField(
-        User,
-        blank=True,
-        related_name="leagueplayer"
-    )
     level = models.FloatField(
         blank=True,
         null=True,
@@ -56,6 +51,34 @@ class League(models.Model):
     )
     updated_at = models.DateTimeField(
         auto_now=True
+    )
+
+    def __str__(self):
+        return self.name
+
+
+class LeagueApplication(models.Model):
+    league = models.ForeignKey(
+        League,
+        on_delete=models.CASCADE,
+        related_name='league'
+    )
+    players = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="leagueplayer"
+    )
+    STATUS_CHOICES = [
+        ("pending", "Pending"),
+        ("approved", "Approved"),
+        ("rejected", "Rejected"),
+    ]
+    status = models.CharField(
+        max_length=64,
+        choices=STATUS_CHOICES,
+        default="pending",
     )
 
 
