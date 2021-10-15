@@ -7,18 +7,25 @@ class League(models.Model):
     name = models.CharField(
         db_index=True,
         max_length=64,
+        unique=True
     )
     city = models.CharField(
         db_index=True,
         max_length=64,
+        null=True,
+        blank=True,
     )
     state = models.CharField(
         db_index=True,
         max_length=64,
+        null=True,
+        blank=True,
     )
     country = models.CharField(
         db_index=True,
         max_length=64,
+        null=True,
+        blank=True,
     )
     start_date = models.DateTimeField(
         null=True,
@@ -77,7 +84,7 @@ class Match(models.Model):
         null=True,
         related_name='pfour'
     )
-    league = models.OneToOneField(
+    league = models.ForeignKey(
         League,
         on_delete=models.CASCADE,
         blank=True,
