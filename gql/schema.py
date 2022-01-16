@@ -1,29 +1,28 @@
 import graphene
-from graphene_django import DjangoObjectType
-from .models import League, Match
 
+from gql.types import UserType, LeagueType, MatchType
+from tennis.models import League, Match
+from account.models import User
 
-class LeagueType(DjangoObjectType):
-    class Meta:
-        model = League
-        fields = ('id', 'name')
-
-
-class MatchType(DjangoObjectType):
-    class Meta:
-        model = Match
-        fields = ('id', 'player_one', 'player_two')
+# Query
 
 
 class Query(graphene.ObjectType):
+    users = graphene.List(UserType)
     leagues = graphene.List(LeagueType)
     matches = graphene.List(MatchType)
+
+    def resolve_matches(root, info, **kwargs):
+        return User.objects.all()
 
     def resolve_leagues(root, info, **kwargs):
         return League.objects.all()
 
     def resolve_matches(root, info, **kwargs):
         return Match.objects.all()
+
+
+# Mutation
 
 
 class LeagueInput(graphene.InputObjectType):

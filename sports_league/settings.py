@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'account.apps.AccountConfig',
     'tennis.apps.TennisConfig',
-    'graphene_django'
+    'graphene_django',
+    'graphene_graphiql_explorer',
 ]
 
 AUTH_USER_MODEL = 'account.User'
