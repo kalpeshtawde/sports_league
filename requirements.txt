@@ -3,3 +3,4 @@ psycopg2-binary>=2.8
 factory-boy==3.2.1
 graphene_django
 graphene_graphiql_explorer
+django-filter

@@ -1,30 +1,19 @@
 import graphene
+from graphene_django.filter import DjangoFilterConnectionField
 
-from gql.types import UserType, LeagueType, MatchType
+from gql.types import UserType, LeagueType, MatchType,\
+    LeagueApplicationType
 from tennis.models import League, Match
-from account.models import User
 
 # Query
-
-
 class Query(graphene.ObjectType):
-    users = graphene.List(UserType)
-    leagues = graphene.List(LeagueType)
-    matches = graphene.List(MatchType)
-
-    def resolve_matches(root, info, **kwargs):
-        return User.objects.all()
-
-    def resolve_leagues(root, info, **kwargs):
-        return League.objects.all()
-
-    def resolve_matches(root, info, **kwargs):
-        return Match.objects.all()
+    all_users = DjangoFilterConnectionField(UserType)
+    all_leagues = DjangoFilterConnectionField(LeagueType)
+    all_matches = DjangoFilterConnectionField(MatchType)
+    all_league_applications = DjangoFilterConnectionField(LeagueApplicationType)
 
 
 # Mutation
-
-
 class LeagueInput(graphene.InputObjectType):
     name = graphene.String(required=True)
     city = graphene.String()
