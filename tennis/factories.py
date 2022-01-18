@@ -1,3 +1,4 @@
+import string
 import factory
 import random
 from factory import fuzzy
@@ -5,7 +6,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 from account.models import User
-from tennis.models import League, Match, MatchRequest
+from tennis.models import League, Match, MatchRequest, Chat
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -44,8 +45,8 @@ class MatchFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Match
 
-    player_one = factory.SubFactory(UserFactory)
-    player_two = factory.SubFactory(UserFactory)
+    player_one = factory.Iterator(User.objects.all())
+    player_two = factory.Iterator(User.objects.all())
     league = factory.Iterator(League.objects.all())
     format = fuzzy.FuzzyChoice(Match.MATCH_CHOICES, getter=lambda c: c[0])
     winner_one = random.choice([player_one, player_two])
@@ -62,9 +63,18 @@ class MatchRequestFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = MatchRequest
 
-    requested_by = factory.SubFactory(UserFactory)
-    accepted_by = factory.SubFactory(UserFactory)
+    requested_by = factory.Iterator(User.objects.all())
+    accepted_by = factory.Iterator(User.objects.all())
     format = fuzzy.FuzzyChoice(MatchRequest.MATCH_CHOICES, getter=lambda c: c[0])
     court = 'Gabriel Park, Portland'
     match_time = "16:00"
     league = factory.Iterator(League.objects.all())
+
+
+class ChatFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Chat
+
+    user_one = factory.Iterator(User.objects.all())
+    user_two = factory.Iterator(User.objects.all())
+    message = fuzzy.FuzzyText(length=20, chars=string.ascii_letters)

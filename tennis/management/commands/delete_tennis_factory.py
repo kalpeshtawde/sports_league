@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand
 from django.db import transaction
 from account.models import User
-from tennis.models import League, Match, MatchRequest
+from tennis.models import League, Match, MatchRequest, Chat
 
 
 class Command(BaseCommand):
@@ -15,4 +15,5 @@ class Command(BaseCommand):
 
         models = [League, Match, MatchRequest]
         for m in models:
+            print(f"@@@@ Running for model {m}")
             m.objects.all().delete()

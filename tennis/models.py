@@ -89,26 +89,26 @@ class Match(models.Model):
     player_one = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='pone'
+        related_name='match_player_one'
     )
     player_two = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='ptwo'
+        related_name='match_player_two'
     )
     player_three = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         blank=True,
         null=True,
-        related_name='pthree'
+        related_name='match_player_three'
     )
     player_four = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         blank=True,
         null=True,
-        related_name='pfour'
+        related_name='match_player_four'
     )
     league = models.ForeignKey(
         League,
@@ -182,13 +182,13 @@ class MatchRequest(models.Model):
     requested_by = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='+'
+        related_name='requested_by_user'
     )
 
     accepted_by = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='+'
+        related_name='accepted_by_user'
     )
 
     MATCH_CHOICES = [
@@ -222,7 +222,7 @@ class MatchRequest(models.Model):
         null=True
     )
 
-    def in_seven_days(self):
+    def in_seven_days():
         return timezone.now() + timedelta(days=7)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -233,13 +233,13 @@ class Chat(models.Model):
     user_one = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='+'
+        related_name='chat_user_one'
     )
 
     user_two = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='+'
+        related_name='chat_user_two'
     )
 
     message = models.TextField()

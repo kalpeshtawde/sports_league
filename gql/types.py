@@ -82,6 +82,6 @@ class ChatType(DjangoObjectType):
         filter_fields = [
             "user_one",
             "user_two",
-           # "message",
+            "message",
             "created_at",
         ]
