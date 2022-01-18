@@ -124,7 +124,6 @@ class Match(models.Model):
     ]
 
     format = models.CharField(
-        db_index=True,
         max_length=64,
         choices=MATCH_CHOICES,
         default="single",
@@ -199,7 +198,6 @@ class MatchRequest(models.Model):
     ]
 
     format = models.CharField(
-        db_index=True,
         max_length=64,
         choices=MATCH_CHOICES,
         default="single",
@@ -224,9 +222,26 @@ class MatchRequest(models.Model):
         null=True
     )
 
-    @staticmethod
-    def in_seven_days():
+    def in_seven_days(self):
         return timezone.now() + timedelta(days=7)
 
     created_at = models.DateTimeField(auto_now_add=True)
     expiry_at = models.DateTimeField(default=in_seven_days)
+
+
+class Chat(models.Model):
+    user_one = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='+'
+    )
+
+    user_two = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='+'
+    )
+
+    message = models.TextField()
+
+    created_at = models.DateTimeField(auto_now_add=True)

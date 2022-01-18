@@ -2,7 +2,7 @@ import graphene
 from graphene_django.filter import DjangoFilterConnectionField
 
 from gql.types import UserType, LeagueType, MatchType,\
-    LeagueApplicationType, MatchRequestType
+    LeagueApplicationType, MatchRequestType, ChatType
 from tennis.models import League, Match
 
 # Query
@@ -12,6 +12,7 @@ class Query(graphene.ObjectType):
     all_matches = DjangoFilterConnectionField(MatchType)
     all_match_requests = DjangoFilterConnectionField(MatchRequestType)
     all_league_applications = DjangoFilterConnectionField(LeagueApplicationType)
+    all_chats = DjangoFilterConnectionField(ChatType)
 
 
 # Mutation
