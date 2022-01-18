@@ -5,7 +5,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 from account.models import User
-from tennis.models import League, Match
+from tennis.models import League, Match, MatchRequest
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -47,10 +47,24 @@ class MatchFactory(factory.django.DjangoModelFactory):
     player_one = factory.SubFactory(UserFactory)
     player_two = factory.SubFactory(UserFactory)
     league = factory.Iterator(League.objects.all())
-    type = fuzzy.FuzzyChoice(Match.MATCH_CHOICES, getter=lambda c: c[0])
+    format = fuzzy.FuzzyChoice(Match.MATCH_CHOICES, getter=lambda c: c[0])
     winner_one = random.choice([player_one, player_two])
+    match_status = random.choice(['completed', 'draw', 'cancelled', 'pending'])
+    court = 'Gabriel Park, Portland'
     start_date = fuzzy.FuzzyNaiveDateTime(
         datetime.today() + relativedelta(months=1),
         datetime.today() + relativedelta(months=3)
     )
     end_date = start_date
+
+
+class MatchRequestFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = MatchRequest
+
+    requested_by = factory.SubFactory(UserFactory)
+    accepted_by = factory.SubFactory(UserFactory)
+    format = fuzzy.FuzzyChoice(MatchRequest.MATCH_CHOICES, getter=lambda c: c[0])
+    court = 'Gabriel Park, Portland'
+    match_time = "16:00"
+    league = factory.Iterator(League.objects.all())

@@ -2,7 +2,7 @@ import graphene
 from graphene_django.filter import DjangoFilterConnectionField
 
 from gql.types import UserType, LeagueType, MatchType,\
-    LeagueApplicationType
+    LeagueApplicationType, MatchRequestType
 from tennis.models import League, Match
 
 # Query
@@ -10,6 +10,7 @@ class Query(graphene.ObjectType):
     all_users = DjangoFilterConnectionField(UserType)
     all_leagues = DjangoFilterConnectionField(LeagueType)
     all_matches = DjangoFilterConnectionField(MatchType)
+    all_match_requests = DjangoFilterConnectionField(MatchRequestType)
     all_league_applications = DjangoFilterConnectionField(LeagueApplicationType)
 
 

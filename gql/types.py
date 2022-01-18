@@ -1,7 +1,7 @@
 from graphene_django import DjangoObjectType
 import graphene
 
-from tennis.models import League, Match, LeagueApplication
+from tennis.models import League, Match, LeagueApplication, MatchRequest
 from account.models import User
 
 
@@ -32,20 +32,7 @@ class LeagueType(DjangoObjectType):
 class MatchType(DjangoObjectType):
     class Meta:
         model = Match
-        fields = (
-            'id',
-            'player_one',
-            'player_two',
-            'player_three',
-            'player_four',
-            'league',
-            'winner_one',
-            'winner_two',
-            'start_date',
-            'end_date',
-            'created_at',
-            'updated_at',
-        )
+        fields = "__all__"
         interfaces = (graphene.relay.Node,)
         filter_fields = [
             'player_one',
@@ -67,4 +54,21 @@ class LeagueApplicationType(DjangoObjectType):
             'league',
             'players',
             'status',
+        ]
+
+
+class MatchRequestType(DjangoObjectType):
+    class Meta:
+        model = MatchRequest
+        fields = "__all__"
+        interfaces = (graphene.relay.Node,)
+        filter_fields = [
+            'requested_by',
+            'accepted_by',
+            'format',
+            'court',
+            'match_time',
+            'league',
+            'created_at',
+            'expiry_at',
         ]

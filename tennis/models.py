@@ -85,59 +85,6 @@ class LeagueApplication(models.Model):
     )
 
 
-class MatchRequest(models.Model):
-    requested_by = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='+'
-    )
-
-    accepted_by = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='+'
-    )
-
-    MATCH_CHOICES = [
-        ("single", "Single"),
-        ("double", "Double"),
-        ("mix_double", "Mix Double"),
-    ]
-
-    format = models.CharField(
-        db_index=True,
-        max_length=64,
-        choices=MATCH_CHOICES,
-        default="single",
-    )
-
-    court = models.CharField(
-        db_index=True,
-        max_length=2000,
-        null=True,
-        blank=True,
-    )
-
-    match_time = models.TimeField(
-        null=True,
-        blank=True,
-    )
-
-    league = models.ForeignKey(
-        League,
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True
-    )
-
-    @staticmethod
-    def in_seven_days():
-        return timezone.now() + timedelta(days=7)
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    expiry_at = models.DateTimeField(auto_now_add=in_seven_days)
-
-
 class Match(models.Model):
     player_one = models.ForeignKey(
         User,
@@ -230,3 +177,56 @@ class Match(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class MatchRequest(models.Model):
+    requested_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='+'
+    )
+
+    accepted_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='+'
+    )
+
+    MATCH_CHOICES = [
+        ("single", "Single"),
+        ("double", "Double"),
+        ("mix_double", "Mix Double"),
+    ]
+
+    format = models.CharField(
+        db_index=True,
+        max_length=64,
+        choices=MATCH_CHOICES,
+        default="single",
+    )
+
+    court = models.CharField(
+        db_index=True,
+        max_length=2000,
+        null=True,
+        blank=True,
+    )
+
+    match_time = models.TimeField(
+        null=True,
+        blank=True,
+    )
+
+    league = models.ForeignKey(
+        League,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+
+    @staticmethod
+    def in_seven_days():
+        return timezone.now() + timedelta(days=7)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    expiry_at = models.DateTimeField(default=in_seven_days)

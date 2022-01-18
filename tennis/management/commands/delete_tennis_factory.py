@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand
 from django.db import transaction
 from account.models import User
-from tennis.models import League, Match
+from tennis.models import League, Match, MatchRequest
 
 
 class Command(BaseCommand):
@@ -13,6 +13,6 @@ class Command(BaseCommand):
 
         User.objects.exclude(is_staff=True).delete()
 
-        models = [League, Match]
+        models = [League, Match, MatchRequest]
         for m in models:
             m.objects.all().delete()

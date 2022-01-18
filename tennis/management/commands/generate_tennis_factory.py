@@ -1,6 +1,6 @@
 from django.core.management import BaseCommand
 from django.db import transaction
-from tennis.factories import UserFactory, LeagueFactory, MatchFactory
+from tennis.factories import UserFactory, LeagueFactory, MatchFactory, MatchRequestFactory
 
 
 class Command(BaseCommand):
@@ -16,3 +16,6 @@ class Command(BaseCommand):
 
         for i in range(50):
             MatchFactory()
+
+        for i in range(50):
+            MatchRequestFactory()
