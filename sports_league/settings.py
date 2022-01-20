@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django_filters',
     'account.apps.AccountConfig',
     'tennis.apps.TennisConfig',
+    'messaging.apps.MessagingConfig',
     'graphene_django',
     'graphene_graphiql_explorer',
 ]

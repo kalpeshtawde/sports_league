@@ -227,21 +227,3 @@ class MatchRequest(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     expiry_at = models.DateTimeField(default=in_seven_days)
-
-
-class Chat(models.Model):
-    user_one = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='chat_user_one'
-    )
-
-    user_two = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='chat_user_two'
-    )
-
-    message = models.TextField()
-
-    created_at = models.DateTimeField(auto_now_add=True)

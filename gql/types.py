@@ -1,7 +1,8 @@
 from graphene_django import DjangoObjectType
 import graphene
 
-from tennis.models import League, Match, LeagueApplication, MatchRequest, Chat
+from tennis.models import League, Match, LeagueApplication, MatchRequest
+from messaging.models import Messaging
 from account.models import User
 
 
@@ -74,14 +75,14 @@ class MatchRequestType(DjangoObjectType):
         ]
 
 
-class ChatType(DjangoObjectType):
+class MessagingType(DjangoObjectType):
     class Meta:
-        model = Chat
+        model = Messaging
         fields = "__all__"
         interfaces = (graphene.relay.Node,)
         filter_fields = [
-            "user_one",
-            "user_two",
             "message",
+            "sender",
+            "recipient",
             "created_at",
         ]

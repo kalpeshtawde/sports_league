@@ -1,8 +1,7 @@
 from django.core.management import BaseCommand
-from django.db import transaction
 
-from tennis.factories import UserFactory, LeagueFactory, MatchFactory, MatchRequestFactory, \
-    ChatFactory
+from tennis.factories import UserFactory, LeagueFactory, MatchFactory, MatchRequestFactory,\
+    MessagingFactory
 
 
 class Command(BaseCommand):
@@ -27,4 +26,4 @@ class Command(BaseCommand):
 
         print(f"@@@@ Running for Chat Factory")
         for i in range(1000):
-            ChatFactory()
+            MessagingFactory()
