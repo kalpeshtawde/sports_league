@@ -6,7 +6,8 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 from account.models import User
-from tennis.models import League, Match, MatchRequest, Chat
+from messaging.models import Messaging
+from tennis.models import League, Match, MatchRequest
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -71,10 +72,10 @@ class MatchRequestFactory(factory.django.DjangoModelFactory):
     league = factory.Iterator(League.objects.all())
 
 
-class ChatFactory(factory.django.DjangoModelFactory):
+class MessagingFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = Chat
+        model = Messaging
 
-    user_one = factory.Iterator(User.objects.all())
-    user_two = factory.Iterator(User.objects.all())
     message = fuzzy.FuzzyText(length=20, chars=string.ascii_letters)
+    sender = factory.Iterator(User.objects.all())
+    recipient = factory.Iterator(User.objects.all())
