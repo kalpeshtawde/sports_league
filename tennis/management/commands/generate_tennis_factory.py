@@ -10,14 +10,14 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         self.stdout.write("Creating the new Things for our app")
         print(f"@@@@ Running for User Factory")
-        for i in range(20):
+        for i in range(200):
             UserFactory()
 
         print(f"@@@@ Running for League Factory")
         LeagueFactory()
 
         print(f"@@@@ Running for Match Factory")
-        for i in range(50):
+        for i in range(5000):
             MatchFactory()
 
         print(f"@@@@ Running for Match Request Factory")
