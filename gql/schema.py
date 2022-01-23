@@ -1,8 +1,9 @@
 import graphene
 from graphene_django.filter import DjangoFilterConnectionField
 
-from gql.types import UserType, LeagueType, MatchType,\
-    LeagueApplicationType, MatchRequestType, MessagingType
+from gql.types import UserType, LeagueType, MatchType,LeagueApplicationType, \
+    MatchRequestType, MessagingType, UserProfileType
+from gql.resolvers import resolve_user_profiles
 from tennis.models import League, Match
 
 # Query
@@ -13,6 +14,13 @@ class Query(graphene.ObjectType):
     all_match_requests = DjangoFilterConnectionField(MatchRequestType)
     all_league_applications = DjangoFilterConnectionField(LeagueApplicationType)
     all_messagings = DjangoFilterConnectionField(MessagingType)
+    user_profiles = graphene.Field(
+        UserProfileType,
+        user_id=graphene.String(required=True),
+    )
+
+    def resolve_user_profiles(self, info, user_id):
+        return resolve_user_profiles(user_id)
 
 
 # Mutation

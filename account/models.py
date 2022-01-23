@@ -92,6 +92,22 @@ class User(AbstractUser):
         null=True,
         help_text="Country of the person",
     )
+    dob = models.DateField(
+        blank=True,
+        null=True,
+        help_text="Date of Birth"
+    )
+    about_me = models.TextField(
+        blank=True,
+        null=True,
+        help_text="about_me"
+    )
+    active = models.BooleanField(
+        default=False
+    )
+    deleted = models.BooleanField(
+        default=False
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

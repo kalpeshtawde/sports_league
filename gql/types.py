@@ -12,7 +12,18 @@ class UserType(DjangoObjectType):
         fields = "__all__"
         interfaces = (graphene.relay.Node,)
         filter_fields = [
-            'email'
+            'first_name',
+            'last_name',
+            'email',
+            'gender',
+            'height',
+            'level',
+            'phone',
+            'city',
+            'state',
+            'country',
+            'active',
+            'deleted',
         ]
 
 
@@ -86,3 +97,17 @@ class MessagingType(DjangoObjectType):
             "recipient",
             "created_at",
         ]
+
+
+class UserProfileType(graphene.ObjectType):
+    user_id = graphene.Int()
+    first_name = graphene.String()
+    last_name = graphene.String()
+    matches_count = graphene.Int()
+    won_count = graphene.Int()
+    draw_count = graphene.Int()
+    lost_count = graphene.Int()
+    city = graphene.String()
+    state = graphene.String()
+    dob = graphene.Date()
+    age = graphene.Int()

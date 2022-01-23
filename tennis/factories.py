@@ -26,6 +26,10 @@ class UserFactory(factory.django.DjangoModelFactory):
     city = "Portland"
     state = "Oregon"
     country = "USA"
+    dob = factory.Faker("date_of_birth", minimum_age=8)
+    about_me = "I am 4.0, available to play weekdays evening and on weekends."
+    active = fuzzy.FuzzyChoice([True, False])
+    deleted = fuzzy.FuzzyChoice([True, False])
 
 
 class LeagueFactory(factory.django.DjangoModelFactory):
@@ -51,7 +55,7 @@ class MatchFactory(factory.django.DjangoModelFactory):
     league = factory.Iterator(League.objects.all())
     format = fuzzy.FuzzyChoice(Match.MATCH_CHOICES, getter=lambda c: c[0])
     winner_one = random.choice([player_one, player_two])
-    match_status = random.choice(['completed', 'draw', 'cancelled', 'pending'])
+    match_status = fuzzy.FuzzyChoice(['completed', 'draw', 'cancelled', 'pending'])
     court = 'Gabriel Park, Portland'
     start_date = fuzzy.FuzzyNaiveDateTime(
         datetime.today() + relativedelta(months=1),
