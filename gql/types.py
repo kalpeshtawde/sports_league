@@ -12,7 +12,16 @@ class UserType(DjangoObjectType):
         fields = "__all__"
         interfaces = (graphene.relay.Node,)
         filter_fields = [
-            'email'
+            'email',
+            'gender',
+            'height',
+            'level',
+            'phone',
+            'city',
+            'state',
+            'country',
+            'active',
+            'deleted',
         ]
 
 

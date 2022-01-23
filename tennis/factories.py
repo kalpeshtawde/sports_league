@@ -26,6 +26,10 @@ class UserFactory(factory.django.DjangoModelFactory):
     city = "Portland"
     state = "Oregon"
     country = "USA"
+    dob = factory.Faker("date_of_birth", minimum_age=8)
+    about_me = "I am 4.0, available to play weekdays evening and on weekends."
+    active = random.choice([True, False])
+    deleted = random.choice([True, False])
 
 
 class LeagueFactory(factory.django.DjangoModelFactory):
