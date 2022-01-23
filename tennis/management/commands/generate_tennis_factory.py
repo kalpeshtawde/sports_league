@@ -2,6 +2,7 @@ from django.core.management import BaseCommand
 
 from tennis.factories import UserFactory, LeagueFactory, MatchFactory, MatchRequestFactory,\
     MessagingFactory
+from tennis.models import League, Match, MatchRequest
 
 
 class Command(BaseCommand):
@@ -19,6 +20,12 @@ class Command(BaseCommand):
         print(f"@@@@ Running for Match Factory")
         for i in range(5000):
             MatchFactory()
+        Match.objects.exclude(match_status__in=['completed']).update(winner_one=None, winner_two=None)
+        for m in Match.objects.filter(match_status='completed'):
+            player = m.player_one
+            m.winner_one = player
+            m.winner_two = None
+            m.save()
 
         print(f"@@@@ Running for Match Request Factory")
         for i in range(50):
