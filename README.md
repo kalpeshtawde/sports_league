@@ -20,5 +20,7 @@ sudo docker-compose run web django-admin startapp tennis
 # How to generate dummy data for APIs
 Generate data:
 docker-compose exec web python manage.py generate_tennis_factory
+
+
 Delete data:
 docker-compose exec web python manage.py delete_tennis_factory
