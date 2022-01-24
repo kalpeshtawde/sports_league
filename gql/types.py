@@ -1,7 +1,7 @@
 from graphene_django import DjangoObjectType
 import graphene
 
-from tennis.models import League, Match, LeagueApplication, MatchRequest
+from tennis.models import League, Match, LeagueApplication, MatchRequest, MatchSet
 from messaging.models import Messaging
 from account.models import User
 
@@ -54,6 +54,21 @@ class MatchType(DjangoObjectType):
             'league',
             'winner_one',
             'winner_two',
+        ]
+
+
+class MatchSetType(DjangoObjectType):
+    class Meta:
+        model = MatchSet
+        fields = "__all__"
+        interfaces = (graphene.relay.Node,)
+        filter_fields = [
+            'match_set_id',
+            'match',
+            'player_one_score',
+            'player_two_score',
+            'player_one_tb_score',
+            'player_two_tb_score',
         ]
 
 

@@ -199,6 +199,31 @@ class Match(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
+class MatchSet(models.Model):
+    match_set_id = models.UUIDField(
+        default=uuid4,
+        unique=True,
+    )
+    match = models.ForeignKey(
+        Match,
+        on_delete=models.CASCADE,
+        related_name='match_set',
+        to_field='match_id',
+    )
+    player_one_score = models.IntegerField(
+        default=0,
+    )
+    player_two_score = models.IntegerField(
+        default=0,
+    )
+    player_one_tb_score = models.IntegerField(
+        default=0,
+    )
+    player_two_tb_score = models.IntegerField(
+        default=0,
+    )
+
+
 class MatchRequest(models.Model):
     match_request_id = models.UUIDField(
         default=uuid4,
