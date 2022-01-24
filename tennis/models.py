@@ -1,16 +1,21 @@
 from datetime import timedelta
-from django.utils import timezone
+from uuid import uuid4
 
+from django.utils import timezone
 from django.db import models
 
 from account.models import User
 
 
 class League(models.Model):
+    league_id = models.UUIDField(
+        default=uuid4,
+        unique=True,
+    )
     name = models.CharField(
         db_index=True,
         max_length=64,
-        unique=True
+        unique=True,
     )
     city = models.CharField(
         db_index=True,
@@ -61,10 +66,15 @@ class League(models.Model):
 
 
 class LeagueApplication(models.Model):
+    league_app_id = models.UUIDField(
+        default=uuid4,
+        unique=True,
+    )
     league = models.ForeignKey(
         League,
         on_delete=models.CASCADE,
-        related_name='league'
+        related_name='league',
+        to_field='league_id',
     )
     players = models.OneToOneField(
         User,
@@ -86,35 +96,44 @@ class LeagueApplication(models.Model):
 
 
 class Match(models.Model):
+    match_id = models.UUIDField(
+        default=uuid4,
+        unique=True,
+    )
     player_one = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='match_player_one'
+        related_name='match_player_one',
+        to_field='user_id',
     )
     player_two = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='match_player_two'
+        related_name='match_player_two',
+        to_field='user_id',
     )
     player_three = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         blank=True,
         null=True,
-        related_name='match_player_three'
+        related_name='match_player_three',
+        to_field='user_id',
     )
     player_four = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         blank=True,
         null=True,
-        related_name='match_player_four'
+        related_name='match_player_four',
+        to_field='user_id',
     )
     league = models.ForeignKey(
         League,
         on_delete=models.CASCADE,
         blank=True,
-        null=True
+        null=True,
+        to_field='league_id',
     )
 
     MATCH_CHOICES = [
@@ -134,14 +153,16 @@ class Match(models.Model):
         on_delete=models.CASCADE,
         blank=True,
         null=True,
-        related_name='wone'
+        related_name='wone',
+        to_field='user_id',
     )
     winner_two = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         blank=True,
         null=True,
-        related_name='wtwo'
+        related_name='wtwo',
+        to_field='user_id',
     )
 
     MATCH_STATUS = [
@@ -179,16 +200,22 @@ class Match(models.Model):
 
 
 class MatchRequest(models.Model):
+    match_request_id = models.UUIDField(
+        default=uuid4,
+        unique=True,
+    )
     requested_by = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='requested_by_user'
+        related_name='requested_by_user',
+        to_field='user_id',
     )
 
     accepted_by = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='accepted_by_user'
+        related_name='accepted_by_user',
+        to_field='user_id',
     )
 
     MATCH_CHOICES = [
@@ -219,7 +246,8 @@ class MatchRequest(models.Model):
         League,
         on_delete=models.CASCADE,
         blank=True,
-        null=True
+        null=True,
+        to_field='league_id',
     )
 
     def in_seven_days():

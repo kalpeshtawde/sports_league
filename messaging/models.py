@@ -1,21 +1,28 @@
 from django.db import models
+from uuid import uuid4
 
 from account.models import User
 
 
 class Messaging(models.Model):
+    message_id = models.UUIDField(
+        default=uuid4,
+        unique=True,
+    )
     message = models.TextField()
 
     sender = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='chat_user_one'
+        related_name='+',
+        to_field='user_id',
     )
 
     recipient = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='chat_user_two'
+        related_name='+',
+        to_field='user_id',
     )
 
     created_at = models.DateTimeField(auto_now_add=True)

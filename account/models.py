@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from django.contrib.auth.models import AbstractUser, BaseUserManager ## A new class is imported. ##
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -39,7 +41,12 @@ class UserManager(BaseUserManager):
 
 class User(AbstractUser):
     username = None
-    email = models.EmailField(_('email address'), unique=True)
+    email = models.EmailField(_('email address'), unique=True,)
+
+    user_id = models.UUIDField(
+        default=uuid4,
+        unique=True,
+    )
 
     GENDER_CHOICES = [
         ("male", "male"),

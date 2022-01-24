@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.core.management import BaseCommand
 
 from tennis.factories import UserFactory, LeagueFactory, MatchFactory, MatchRequestFactory,\
@@ -8,6 +9,7 @@ from tennis.models import League, Match, MatchRequest
 class Command(BaseCommand):
     help = "Creates dummy data for tennis app"
 
+    @transaction.atomic
     def handle(self, *args, **kwargs):
         self.stdout.write("Creating the new Things for our app")
         print(f"@@@@ Running for User Factory")

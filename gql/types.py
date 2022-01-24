@@ -47,10 +47,10 @@ class MatchType(DjangoObjectType):
         fields = "__all__"
         interfaces = (graphene.relay.Node,)
         filter_fields = [
-            'player_one',
-            'player_two',
-            'player_three',
-            'player_four',
+            'player_one__user_id',
+            'player_two__user_id',
+            'player_three__user_id',
+            'player_four__user_id',
             'league',
             'winner_one',
             'winner_two',
@@ -63,7 +63,7 @@ class LeagueApplicationType(DjangoObjectType):
         fields = "__all__"
         interfaces = (graphene.relay.Node,)
         filter_fields = [
-            'league',
+            'league__league_id',
             'players',
             'status',
         ]
@@ -75,12 +75,12 @@ class MatchRequestType(DjangoObjectType):
         fields = "__all__"
         interfaces = (graphene.relay.Node,)
         filter_fields = [
-            'requested_by',
-            'accepted_by',
+            'requested_by__user_id',
+            'accepted_by__user_id',
             'format',
             'court',
             'match_time',
-            'league',
+            'league__league_id',
             'created_at',
             'expiry_at',
         ]
@@ -93,14 +93,14 @@ class MessagingType(DjangoObjectType):
         interfaces = (graphene.relay.Node,)
         filter_fields = [
             "message",
-            "sender",
-            "recipient",
+            "sender__user_id",
+            "recipient__user_id",
             "created_at",
         ]
 
 
 class UserProfileType(graphene.ObjectType):
-    user_id = graphene.Int()
+    user_id = graphene.String()
     first_name = graphene.String()
     last_name = graphene.String()
     matches_count = graphene.Int()
