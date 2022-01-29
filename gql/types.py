@@ -46,16 +46,6 @@ class MatchType(DjangoObjectType):
         model = Match
         fields = "__all__"
         interfaces = (graphene.relay.Node,)
-        filter_fields = [
-            'match_id',
-            'player_one__user_id',
-            'player_two__user_id',
-            'player_three__user_id',
-            'player_four__user_id',
-            'league',
-            'winner_one',
-            'winner_two',
-        ]
 
 
 class MatchSetType(DjangoObjectType):
