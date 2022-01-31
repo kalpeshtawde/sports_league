@@ -236,11 +236,22 @@ class MatchRequest(models.Model):
         to_field='user_id',
     )
 
+    requested_to = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='requested_to_user',
+        to_field='user_id',
+        null=True,
+        blank=True,
+    )
+
     accepted_by = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='accepted_by_user',
         to_field='user_id',
+        null=True,
+        blank=True,
     )
 
     MATCH_CHOICES = [
@@ -255,9 +266,21 @@ class MatchRequest(models.Model):
         default="single",
     )
 
+    location = models.CharField(
+        db_index=True,
+        max_length=2000,
+        null=True,
+        blank=True,
+    )
+
     court = models.CharField(
         db_index=True,
         max_length=2000,
+        null=True,
+        blank=True,
+    )
+
+    match_date = models.DateField(
         null=True,
         blank=True,
     )

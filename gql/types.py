@@ -41,6 +41,17 @@ class LeagueType(DjangoObjectType):
         ]
 
 
+class LeagueInput(graphene.InputObjectType):
+    name = graphene.String(required=True)
+    city = graphene.String()
+    state = graphene.String()
+    country = graphene.String()
+    start_date = graphene.DateTime()
+    end_date = graphene.DateTime()
+    level = graphene.Float()
+    description = graphene.String()
+
+
 class MatchType(DjangoObjectType):
     class Meta:
         model = Match
@@ -84,14 +95,30 @@ class MatchRequestType(DjangoObjectType):
         filter_fields = [
             'match_request_id',
             'requested_by__user_id',
+            'requested_to__user_id',
             'accepted_by__user_id',
             'format',
+            'location',
             'court',
+            'match_date',
             'match_time',
             'league__league_id',
             'created_at',
             'expiry_at',
         ]
+
+
+class MatchRequestInput(graphene.InputObjectType):
+    requested_by = graphene.String()
+    requested_to = graphene.String()
+    accepted_by = graphene.String()
+    match_request_id = graphene.String()
+    format = graphene.String()
+    location = graphene.String()
+    court = graphene.String()
+    match_date = graphene.Date()
+    match_time = graphene.Time()
+    league_id = graphene.Float()
 
 
 class MessagingType(DjangoObjectType):
