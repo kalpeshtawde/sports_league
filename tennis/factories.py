@@ -1,5 +1,6 @@
 import string
 import factory
+import pytz
 from factory import fuzzy
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -39,8 +40,8 @@ class LeagueFactory(factory.django.DjangoModelFactory):
     city = "Portland"
     state = "Oregon"
     country = "USA"
-    start_date = datetime.today() + relativedelta(months=1)
-    end_date = datetime.today() + relativedelta(months=3)
+    start_date = datetime.utcnow().replace(tzinfo=pytz.utc) + relativedelta(months=1)
+    end_date = datetime.utcnow().replace(tzinfo=pytz.utc) + relativedelta(months=3)
     level = "3.5"
     description = name
 

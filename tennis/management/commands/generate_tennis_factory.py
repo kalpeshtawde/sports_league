@@ -1,5 +1,6 @@
 import random
 from uuid import uuid4
+import pytz
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
@@ -48,8 +49,8 @@ class Command(BaseCommand):
             match_format = random.choice(['single'])
             match_status = random.choice(['completed', 'draw', 'cancelled', 'pending'])
             start_date = self.random_date(
-                datetime.today() + relativedelta(months=-6),
-                datetime.today() + relativedelta(months=3)
+                datetime.utcnow().replace(tzinfo=pytz.utc) + relativedelta(months=-6),
+                datetime.utcnow().replace(tzinfo=pytz.utc) + relativedelta(months=3),
             )
             end_date = start_date
 
@@ -73,7 +74,6 @@ class Command(BaseCommand):
                         player_one_score=6,
                         player_two_score=3,
                     )
-                    print(created)
 
         Match.objects.exclude(match_status__in=['completed']).update(winner_one=None, winner_two=None)
 
