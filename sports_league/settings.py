@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from graphql_auth.settings import DEFAULTS
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,10 +43,52 @@ INSTALLED_APPS = [
     'messaging.apps.MessagingConfig',
     'graphene_django',
     'graphene_graphiql_explorer',
+    'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
+    'graphql_auth',
 ]
 
 AUTH_USER_MODEL = 'account.User'
-AUTHENTICATION_BACKENDS = ['account.backends.EmailBackend']
+AUTHENTICATION_BACKENDS = [
+#    'account.backends.EmailBackend'
+    'graphql_jwt.backends.JSONWebTokenBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    'graphql_auth.backends.GraphQLAuthBackend',
+]
+
+# This setting overrides the graphql_auth/settings.py defaults
+DEFAULTS['LOGIN_ALLOWED_FIELDS'] = ['email']
+DEFAULTS['REGISTER_MUTATION_FIELDS'] = ['email']
+DEFAULTS['USER_NODE_FILTER_FIELDS'] = {
+    'email': ['exact'],
+    'is_active': ['exact'],
+    'status__archived': ['exact'],
+    'status__verified': ['exact'],
+    'status__secondary_email': ['exact'],
+}
+GRAPHQL_AUTH = DEFAULTS
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+GRAPHQL_JWT = {
+    "JWT_VERIFY_EXPIRATION": True,
+
+    # optional
+    "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
+    "JWT_ALLOW_ANY_CLASSES": [
+        "graphql_auth.mutations.Register",
+        "graphql_auth.mutations.VerifyAccount",
+        "graphql_auth.mutations.ResendActivationEmail",
+        "graphql_auth.mutations.SendPasswordResetEmail",
+        "graphql_auth.mutations.PasswordReset",
+        "graphql_auth.mutations.ObtainJSONWebToken",
+        "graphql_auth.mutations.VerifyToken",
+        "graphql_auth.mutations.RefreshToken",
+        "graphql_auth.mutations.RevokeToken",
+        "graphql_auth.mutations.VerifySecondaryEmail",
+    ],
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -56,6 +99,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+GRAPHENE = {
+    'SCHEMA': 'quickstart.schema.schema', # this file doesn't exist yet
+    'MIDDLEWARE': [
+        'graphql_jwt.middleware.JSONWebTokenMiddleware',
+    ],
+}
 
 ROOT_URLCONF = 'sports_league.urls'
 

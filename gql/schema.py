@@ -9,10 +9,12 @@ from gql.resolvers import resolve_user_profiles
 from gql.filters import MatchFilter
 from tennis.models import League, Match, MatchRequest
 from account.models import User
+from graphql_auth.schema import UserQuery, MeQuery
+from graphql_auth import mutations
 
 
 # Query
-class Query(graphene.ObjectType):
+class Query(UserQuery, graphene.ObjectType):
     all_users = DjangoFilterConnectionField(UserType)
     all_leagues = DjangoFilterConnectionField(LeagueType)
     all_matches = DjangoFilterConnectionField(
@@ -31,6 +33,27 @@ class Query(graphene.ObjectType):
 
 
 # Mutation
+class AuthMutation(graphene.ObjectType):
+    register = mutations.Register.Field()
+    verify_account = mutations.VerifyAccount.Field()
+    resend_activation_email = mutations.ResendActivationEmail.Field()
+    send_password_reset_email = mutations.SendPasswordResetEmail.Field()
+    password_reset = mutations.PasswordReset.Field()
+    password_change = mutations.PasswordChange.Field()
+    archive_account = mutations.ArchiveAccount.Field()
+    delete_account = mutations.DeleteAccount.Field()
+    update_account = mutations.UpdateAccount.Field()
+    send_secondary_email_activation = mutations.SendSecondaryEmailActivation.Field()
+    verify_secondary_email = mutations.VerifySecondaryEmail.Field()
+    swap_emails = mutations.SwapEmails.Field()
+
+    # django-graphql-jwt inheritances
+    token_auth = mutations.ObtainJSONWebToken.Field()
+    verify_token = mutations.VerifyToken.Field()
+    refresh_token = mutations.RefreshToken.Field()
+    revoke_token = mutations.RevokeToken.Field()
+
+
 class CreateLeague(graphene.Mutation):
     class Arguments:
         input = LeagueInput(required=True)
@@ -90,7 +113,7 @@ class CreateMatchRequest(graphene.Mutation):
         return CreateMatchRequest(match_request=match_request)
 
 
-class Mutation(graphene.ObjectType):
+class Mutation(AuthMutation, graphene.ObjectType):
     league = CreateLeague.Field()
     match_request = CreateMatchRequest.Field()
 

@@ -4,3 +4,5 @@ factory-boy==3.2.1
 graphene_django
 graphene_graphiql_explorer
 django-filter
+django-graphql-jwt==0.3.0
+django-graphql-auth
