@@ -41,17 +41,6 @@ class LeagueType(DjangoObjectType):
         ]
 
 
-class LeagueInput(graphene.InputObjectType):
-    name = graphene.String(required=True)
-    city = graphene.String()
-    state = graphene.String()
-    country = graphene.String()
-    start_date = graphene.DateTime()
-    end_date = graphene.DateTime()
-    level = graphene.Float()
-    description = graphene.String()
-
-
 class MatchType(DjangoObjectType):
     class Meta:
         model = Match
@@ -108,19 +97,6 @@ class MatchRequestType(DjangoObjectType):
         ]
 
 
-class MatchRequestInput(graphene.InputObjectType):
-    requested_by = graphene.String()
-    requested_to = graphene.String()
-    accepted_by = graphene.String()
-    match_request_id = graphene.String()
-    format = graphene.String()
-    location = graphene.String()
-    court = graphene.String()
-    match_date = graphene.Date()
-    match_time = graphene.Time()
-    league_id = graphene.Float()
-
-
 class MessagingType(DjangoObjectType):
     class Meta:
         model = Messaging
@@ -147,3 +123,57 @@ class UserProfileType(graphene.ObjectType):
     state = graphene.String()
     dob = graphene.Date()
     age = graphene.Int()
+
+
+class MatchRequestInput(graphene.InputObjectType):
+    requested_by = graphene.String()
+    requested_to = graphene.String()
+    accepted_by = graphene.String()
+    match_request_id = graphene.String()
+    format = graphene.String()
+    location = graphene.String()
+    court = graphene.String()
+    match_date = graphene.Date()
+    match_time = graphene.Time()
+    league_id = graphene.Float()
+
+
+class LeagueInput(graphene.InputObjectType):
+    name = graphene.String(required=True)
+    city = graphene.String()
+    state = graphene.String()
+    country = graphene.String()
+    start_date = graphene.DateTime()
+    end_date = graphene.DateTime()
+    level = graphene.Float()
+    description = graphene.String()
+
+
+class MatchSetInput(graphene.InputObjectType):
+    match_id = graphene.String()
+    match_set_id = graphene.String()
+    player_one_score = graphene.Int()
+    player_two_score = graphene.Int()
+    player_one_tb_score = graphene.Int()
+    player_two_tb_score = graphene.Int()
+
+
+class MatchInput(graphene.InputObjectType):
+    match_id = graphene.String()
+    player_one_id = graphene.String()
+    player_two_id = graphene.String()
+    player_three_id = graphene.String()
+    player_four_id = graphene.String()
+    league = graphene.String()
+    format = graphene.String()
+    winner_one = graphene.String()
+    winner_two = graphene.String()
+    match_status = graphene.String()
+    court = graphene.String()
+    start_date = graphene.Date()
+    end_date = graphene.Date()
+    set_1 = MatchSetInput()
+    set_2 = MatchSetInput()
+    set_3 = MatchSetInput()
+    set_4 = MatchSetInput()
+    set_5 = MatchSetInput()

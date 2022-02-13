@@ -1,16 +1,18 @@
 import graphene
 from uuid import uuid4
-from graphene_django.filter import DjangoFilterConnectionField
 
 from gql.types import UserType, LeagueType, MatchType,LeagueApplicationType, \
     MatchRequestType, MessagingType, UserProfileType, MatchSetType, \
-    LeagueInput, MatchRequestInput
+    LeagueInput, MatchRequestInput, MatchInput
 from gql.resolvers import resolve_user_profiles
 from gql.filters import MatchFilter
-from tennis.models import League, Match, MatchRequest
+from tennis.models import League, Match, MatchRequest, MatchSet
 from account.models import User
+
 from graphql_auth.schema import UserQuery, MeQuery
+from graphene_django.filter import DjangoFilterConnectionField
 from graphql_auth import mutations
+from graphql import GraphQLError
 
 
 # Query
@@ -75,6 +77,127 @@ class CreateLeague(graphene.Mutation):
         return CreateLeague(league=league)
 
 
+class SubmitScore(graphene.Mutation):
+    class Arguments:
+        input = MatchInput(required=True, name="submitScore")
+
+    submit_score = graphene.Field(MatchType)
+
+    @classmethod
+    def mutate(cls, root, info, input):
+        if input.player_one_id and input.player_two_id:
+            user1 = User.objects.filter(user_id=input.player_one_id).first()
+            user2 = User.objects.filter(user_id=input.player_two_id).first()
+
+            user3 = user4 = None
+            if input.player_three_id:
+                user3 = User.objects.filter(user_id=input.player_three_id).first()
+            if input.player_four_id:
+                user4 = User.objects.filter(user_id=input.player_four_id).first()
+
+            winner1 = winner2 = None
+            if input.winner_one:
+                winner1 = User.objects.filter(user_id=input.winner_one).first()
+            if input.winner_two:
+                winner2 = User.objects.filter(user_id=input.winner_two).first()
+
+            league = None
+            if input.league:
+                league = League.objects.filter(league_id=input.league).first()
+
+            if not input.match_status:
+                raise GraphQLError("Please provide match status")
+
+            if not input.format:
+                raise GraphQLError("Please provide match format")
+
+            match_id = uuid4() if not input.match_id else input.match_id
+
+            match, flag = Match.objects.update_or_create(
+                match_id=match_id,
+                defaults={
+                    'player_one': user1,
+                    'player_two': user2,
+                    'player_three': user3,
+                    'player_four': user4,
+                    'format': input.format,
+                    'match_status': input.match_status,
+                    'league': league,
+                    'winner_one': winner1,
+                    'winner_two': winner2,
+                    'court': input.court,
+                    'start_date': input.start_date,
+                    'end_date': input.end_date,
+                }
+            )
+
+            if match:
+                if input.set_1:
+                    match_set_id = uuid4() if not input.set_1.match_set_id else input.set_1.match_set_id
+                    set_1, flag = MatchSet.objects.update_or_create(
+                        match_set_id=match_set_id,
+                        match=match,
+                        defaults={
+                            'player_one_score': input.set_1.player_one_score,
+                            'player_two_score': input.set_1.player_two_score,
+                            'player_one_tb_score': input.set_1.player_one_tb_score,
+                            'player_two_tb_score': input.set_1.player_two_tb_score,
+                        }
+                    )
+                if input.set_2:
+                    match_set_id = uuid4() if not input.set_2.match_set_id else input.set_2.match_set_id
+                    set_2, flag = MatchSet.objects.update_or_create(
+                        match_set_id=match_set_id,
+                        match=match,
+                        defaults={
+                            'player_one_score': input.set_2.player_one_score,
+                            'player_two_score': input.set_2.player_two_score,
+                            'player_one_tb_score': input.set_2.player_one_tb_score,
+                            'player_two_tb_score': input.set_2.player_two_tb_score,
+                        }
+                    )
+                if input.set_3:
+                    match_set_id = uuid4() if not input.set_3.match_set_id else input.set_3.match_set_id
+                    set_3, flag = MatchSet.objects.update_or_create(
+                        match_set_id=match_set_id,
+                        match=match,
+                        defaults={
+                            'player_one_score': input.set_3.player_one_score,
+                            'player_two_score': input.set_3.player_two_score,
+                            'player_one_tb_score': input.set_3.player_one_tb_score,
+                            'player_two_tb_score': input.set_3.player_two_tb_score,
+                        }
+                    )
+                if input.set_4:
+                    match_set_id = uuid4() if not input.set_4.match_set_id else input.set_4.match_set_id
+                    set_4, flag = MatchSet.objects.update_or_create(
+                        match_set_id=match_set_id,
+                        match=match,
+                        defaults={
+                            'player_one_score': input.set_4.player_one_score,
+                            'player_two_score': input.set_4.player_two_score,
+                            'player_one_tb_score': input.set_4.player_one_tb_score,
+                            'player_two_tb_score': input.set_4.player_two_tb_score,
+                        }
+                    )
+                if input.set_5:
+                    match_set_id = uuid4() if not input.set_5.match_set_id else input.set_5.match_set_id
+                    set_5, flag = MatchSet.objects.update_or_create(
+                        match_set_id=match_set_id,
+                        match=match,
+                        defaults={
+                            'player_one_score': input.set_5.player_one_score,
+                            'player_two_score': input.set_5.player_two_score,
+                            'player_one_tb_score': input.set_5.player_one_tb_score,
+                            'player_two_tb_score': input.set_5.player_two_tb_score,
+                        }
+                    )
+
+                return SubmitScore(submit_score=match)
+        else:
+            raise GraphQLError("Player information cannot be blank")
+
+
 class CreateMatchRequest(graphene.Mutation):
     class Arguments:
         input = MatchRequestInput(required=True)
@@ -116,6 +239,7 @@ class CreateMatchRequest(graphene.Mutation):
 class Mutation(AuthMutation, graphene.ObjectType):
     league = CreateLeague.Field()
     match_request = CreateMatchRequest.Field()
+    submit_score = SubmitScore.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
