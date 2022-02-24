@@ -6,3 +6,4 @@ graphene_graphiql_explorer
 django-filter
 django-graphql-jwt==0.3.0
 django-graphql-auth
+Pillow==9.0.1
