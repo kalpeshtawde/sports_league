@@ -55,6 +55,25 @@ AUTHENTICATION_BACKENDS = [
     'graphql_auth.backends.GraphQLAuthBackend',
 ]
 
+DEFAULTS['UPDATE_MUTATION_FIELDS'] = [
+    'first_name',
+    'last_name',
+    'is_staff',
+    'is_active',
+    'gender',
+    'height',
+    'level',
+    'phone',
+    'picture',
+    'city',
+    'state',
+    'country',
+    'dob',
+    'about_me',
+    'active',
+    'deleted',
+]
+
 # This setting overrides the graphql_auth/settings.py defaults
 DEFAULTS['LOGIN_ALLOWED_FIELDS'] = ['email']
 DEFAULTS['REGISTER_MUTATION_FIELDS'] = ['email']
