@@ -54,6 +54,17 @@ class League(models.Model):
         null=True,
         blank=True,
     )
+
+    STATUS_CHOICES = [
+        ("ongoing", "Ongoing"),
+        ("completed", "Completed"),
+    ]
+    status = models.CharField(
+        max_length=64,
+        choices=STATUS_CHOICES,
+        default="Ongoing",
+    )
+
     created_at = models.DateTimeField(
         auto_now_add=True
     )
