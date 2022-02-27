@@ -33,7 +33,8 @@ def resolve_league_stat(league_id):
            league.start_date,
            league.end_date,
            league.level,
-           league.description 
+           league.description ,
+           league.status
         from
            tennis_match match 
            INNER JOIN
@@ -75,6 +76,7 @@ def resolve_league_stat(league_id):
                 data['end_date'] = row['end_date']
                 data['level'] = row['level']
                 data['description'] = row['description']
+                data['status'] = row['status']
                 data['format'] = row['format']
 
     user_name_map = {}

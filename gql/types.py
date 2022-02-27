@@ -142,6 +142,7 @@ class LeagueStatType(graphene.ObjectType):
     end_date = graphene.Date()
     level = graphene.String()
     description = graphene.String()
+    status = graphene.String()
     format = graphene.String()
     user_stat = graphene.List(LeagueUserStatType)
 
