@@ -125,6 +125,27 @@ class UserProfileType(graphene.ObjectType):
     age = graphene.Int()
 
 
+class LeagueUserStatType(graphene.ObjectType):
+    user_id = graphene.String()
+    total = graphene.Int()
+    won = graphene.Int()
+    loss = graphene.Int()
+
+
+class LeagueStatType(graphene.ObjectType):
+    league_id = graphene.String()
+    name = graphene.String()
+    city = graphene.String()
+    state = graphene.String()
+    country = graphene.String()
+    start_date = graphene.Date()
+    end_date = graphene.Date()
+    level = graphene.String()
+    description = graphene.String()
+    format = graphene.String()
+    user_stat = graphene.List(LeagueUserStatType)
+
+
 class MatchRequestInput(graphene.InputObjectType):
     requested_by = graphene.String()
     requested_to = graphene.String()

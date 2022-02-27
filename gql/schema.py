@@ -3,8 +3,8 @@ from uuid import uuid4
 
 from gql.types import UserType, LeagueType, MatchType,LeagueApplicationType, \
     MatchRequestType, MessagingType, UserProfileType, MatchSetType, \
-    LeagueInput, MatchRequestInput, MatchInput
-from gql.resolvers import resolve_user_profiles
+    LeagueInput, MatchRequestInput, MatchInput, LeagueStatType
+from gql.resolvers import resolve_user_profiles, resolve_league_stat
 from gql.filters import MatchFilter
 from tennis.models import League, Match, MatchRequest, MatchSet
 from account.models import User
@@ -29,9 +29,16 @@ class Query(UserQuery, graphene.ObjectType):
         UserProfileType,
         user_id=graphene.String(required=True),
     )
+    league_stat = graphene.Field(
+        LeagueStatType,
+        league_id=graphene.String(required=True),
+    )
 
     def resolve_user_profiles(self, info, user_id):
         return resolve_user_profiles(user_id)
+
+    def resolve_league_stat(self, info, league_id):
+        return resolve_league_stat(league_id)
 
 
 # Mutation
