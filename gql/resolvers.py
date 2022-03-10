@@ -34,7 +34,9 @@ def resolve_league_stat(league_id):
            league.end_date,
            league.level,
            league.description ,
-           league.status
+           league.status,
+           league.winner_one_id,
+           league.winner_two_id
         from
            tennis_match match 
            INNER JOIN
@@ -71,6 +73,8 @@ def resolve_league_stat(league_id):
                 data['name'] = row['name']
                 data['city'] = row['city']
                 data['state'] = row['state']
+                data['winner_one_id'] = row['winner_one_id']
+                data['winner_two_id'] = row['winner_two_id']
                 data['country'] = row['country']
                 data['start_date'] = row['start_date']
                 data['end_date'] = row['end_date']

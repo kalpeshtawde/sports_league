@@ -1,6 +1,7 @@
 import string
 import factory
 import pytz
+import random
 from factory import fuzzy
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -29,14 +30,14 @@ class UserFactory(factory.django.DjangoModelFactory):
     dob = factory.Faker("date_of_birth", minimum_age=8)
     about_me = "I am 4.0, available to play weekdays evening and on weekends."
     active = fuzzy.FuzzyChoice([True, False])
+    picture = "default.png"
     deleted = fuzzy.FuzzyChoice([True, False])
 
 
 class LeagueFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = League
-
-    name = "Portland tennis leagues 4.5"
+    name = fuzzy.FuzzyInteger(1, 10000)
     city = "Portland"
     state = "Oregon"
     country = "USA"
@@ -44,6 +45,7 @@ class LeagueFactory(factory.django.DjangoModelFactory):
     end_date = datetime.utcnow().replace(tzinfo=pytz.utc) + relativedelta(months=3)
     level = "3.5"
     description = name
+    status = fuzzy.FuzzyChoice(["ongoing", "completed"])
 
 
 class MatchRequestFactory(factory.django.DjangoModelFactory):

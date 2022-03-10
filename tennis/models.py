@@ -14,24 +14,24 @@ class League(models.Model):
     )
     name = models.CharField(
         db_index=True,
-        max_length=64,
+        max_length=256,
         unique=True,
     )
     city = models.CharField(
         db_index=True,
-        max_length=64,
+        max_length=256,
         null=True,
         blank=True,
     )
     state = models.CharField(
         db_index=True,
-        max_length=64,
+        max_length=256,
         null=True,
         blank=True,
     )
     country = models.CharField(
         db_index=True,
-        max_length=64,
+        max_length=256,
         null=True,
         blank=True,
     )
@@ -60,9 +60,25 @@ class League(models.Model):
         ("completed", "Completed"),
     ]
     status = models.CharField(
-        max_length=64,
+        max_length=256,
         choices=STATUS_CHOICES,
-        default="Ongoing",
+        default="ongoing",
+    )
+    winner_one = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name='league_wone',
+        to_field='user_id',
+    )
+    winner_two = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name='league_wtwo',
+        to_field='user_id',
     )
 
     created_at = models.DateTimeField(
@@ -100,7 +116,7 @@ class LeagueApplication(models.Model):
         ("rejected", "Rejected"),
     ]
     status = models.CharField(
-        max_length=64,
+        max_length=256,
         choices=STATUS_CHOICES,
         default="pending",
     )
@@ -154,7 +170,7 @@ class Match(models.Model):
     ]
 
     format = models.CharField(
-        max_length=64,
+        max_length=256,
         choices=MATCH_CHOICES,
         default="single",
     )
@@ -184,7 +200,7 @@ class Match(models.Model):
     ]
     match_status = models.CharField(
         db_index=True,
-        max_length=64,
+        max_length=256,
         choices=MATCH_STATUS,
         default="single",
     )
@@ -272,7 +288,7 @@ class MatchRequest(models.Model):
     ]
 
     format = models.CharField(
-        max_length=64,
+        max_length=256,
         choices=MATCH_CHOICES,
         default="single",
     )

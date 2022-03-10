@@ -144,6 +144,8 @@ class LeagueStatType(graphene.ObjectType):
     description = graphene.String()
     status = graphene.String()
     format = graphene.String()
+    winner_one_id = graphene.String()
+    winner_two_id = graphene.String()
     user_stat = graphene.List(LeagueUserStatType)
 
 
