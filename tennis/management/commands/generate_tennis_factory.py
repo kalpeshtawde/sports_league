@@ -9,7 +9,7 @@ from django.db.utils import IntegrityError
 from django.core.management import BaseCommand
 
 from tennis.factories import UserFactory, LeagueFactory, MatchRequestFactory,\
-    MessagingFactory
+    MessagingFactory, LeagueApplication
 from tennis.models import League, Match, MatchRequest, MatchSet
 from account.models import User
 
@@ -50,10 +50,20 @@ class Command(BaseCommand):
                         league.winner_one = user
                         league.save()
 
+    def run_league_applications_factory(self):
+        print(f"@@@@ Running league application factory")
+        all_users = User.objects.all()
+        for league in League.objects.all():
+            for i in range(15):
+                LeagueApplication.objects.update_or_create(
+                    league=league,
+                    applicant=all_users[random.choice(range(all_users.count()))],
+                    status="approved",
+                )
+
     def run_match_factory(self):
         print(f"@@@@ Running for Match Factory")
         all_users = User.objects.all()
-        print(f"all users count {all_users.count()}")
         for i in range(1000):
             player_one = all_users[random.choice(range(all_users.count()))]
             player_two = all_users[random.choice(range(all_users.count()))]
@@ -114,6 +124,7 @@ class Command(BaseCommand):
 
         self.run_user_factory()
         self.run_league_factory()
+        self.run_league_applications_factory()
         self.run_match_factory()
         self.run_match_request_factory()
         self.run_chat_factory()

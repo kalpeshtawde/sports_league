@@ -27,7 +27,7 @@ class LeagueAdmin(admin.ModelAdmin):
 class LeagueApplicationAdmin(admin.ModelAdmin):
     list_display = (
         'league',
-        'players',
+        'applicant',
         'status',
     )
     search_fields = (

@@ -8,7 +8,8 @@ from dateutil.relativedelta import relativedelta
 
 from account.models import User
 from messaging.models import Messaging
-from tennis.models import League, Match, MatchRequest, MatchSet
+from tennis.models import League, Match, MatchRequest, MatchSet, \
+    LeagueApplication
 
 
 class UserFactory(factory.django.DjangoModelFactory):

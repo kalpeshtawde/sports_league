@@ -103,12 +103,13 @@ class LeagueApplication(models.Model):
         related_name='league',
         to_field='league_id',
     )
-    players = models.OneToOneField(
+    applicant = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         blank=True,
         null=True,
-        related_name="leagueplayer"
+        related_name='applicant',
+        to_field='user_id',
     )
     STATUS_CHOICES = [
         ("pending", "Pending"),
