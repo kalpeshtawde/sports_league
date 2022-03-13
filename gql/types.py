@@ -71,6 +71,8 @@ class LeagueApplicationType(DjangoObjectType):
         filter_fields = [
             'league_app_id',
             'league__league_id',
+            'league__city',
+            'league__state',
             'applicant__user_id',
             'applicant',
             'status',
