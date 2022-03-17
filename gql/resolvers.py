@@ -91,7 +91,8 @@ def resolve_league_stat(league_id):
     for u in user.keys():
         data['user_stat'].append(
             {
-                "user_id": user_name_map[u],
+                "user_name": user_name_map[u],
+                "user_id": u,
                 "total": user[u]['total'],
                 "won": user[u]['won'],
                 "loss": user[u]['loss'],

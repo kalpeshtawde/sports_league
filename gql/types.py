@@ -12,6 +12,7 @@ class UserType(DjangoObjectType):
         fields = "__all__"
         interfaces = (graphene.relay.Node,)
         filter_fields = [
+            'user_id',
             'first_name',
             'last_name',
             'email',
@@ -134,6 +135,7 @@ class UserProfileType(graphene.ObjectType):
 
 
 class LeagueUserStatType(graphene.ObjectType):
+    user_name = graphene.String()
     user_id = graphene.String()
     total = graphene.Int()
     won = graphene.Int()
