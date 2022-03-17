@@ -38,6 +38,11 @@ class LeagueType(DjangoObjectType):
             'state',
             'country',
             'level',
+            'start_date',
+            'end_date',
+            'status',
+            'winner_one',
+            'winner_two',
         ]
 
 
