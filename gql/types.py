@@ -11,21 +11,6 @@ class UserType(DjangoObjectType):
         model = User
         fields = "__all__"
         interfaces = (graphene.relay.Node,)
-        filter_fields = [
-            'user_id',
-            'first_name',
-            'last_name',
-            'email',
-            'gender',
-            'height',
-            'level',
-            'phone',
-            'city',
-            'state',
-            'country',
-            'active',
-            'deleted',
-        ]
 
 
 class LeagueType(DjangoObjectType):
