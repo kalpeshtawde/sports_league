@@ -1,7 +1,6 @@
 import string
 import factory
 import pytz
-import random
 from factory import fuzzy
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
