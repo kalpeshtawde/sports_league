@@ -109,7 +109,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         help_text="Phone number of the person",
     )
     picture = models.CharField(
-        max_length=36,
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+    rating = models.CharField(
+        max_length=10,
         blank=True,
         null=True,
     )
