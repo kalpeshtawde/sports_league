@@ -28,6 +28,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     city = "Portland"
     state = "Oregon"
     country = "USA"
+    rating = fuzzy.FuzzyChoice(['3.0', '3.5', '4.0', '4.5', '5.0', '5.5', '6.0'])
     dob = factory.Faker("date_of_birth", minimum_age=8)
     about_me = "I am 4.0, available to play weekdays evening and on weekends."
     active = fuzzy.FuzzyChoice([True, False])
