@@ -1,12 +1,13 @@
-import django_filters
+from django_filters import FilterSet, OrderingFilter, CharFilter
 from django.db.models import Q
 
 from tennis.models import Match
 from account.models import User
+from messaging.models import Messaging
 
 
-class MatchFilter(django_filters.FilterSet):
-    user_search = django_filters.CharFilter(
+class MatchFilter(FilterSet):
+    user_search = CharFilter(
         method='user_filter', label='User Search'
     )
 
@@ -33,8 +34,8 @@ class MatchFilter(django_filters.FilterSet):
         )
 
 
-class UserFilter(django_filters.FilterSet):
-    user_name_search = django_filters.CharFilter(
+class UserFilter(FilterSet):
+    user_name_search = CharFilter(
         method='user_name_filter', label='User Name Search'
     )
 
@@ -61,4 +62,33 @@ class UserFilter(django_filters.FilterSet):
         return User.objects.filter(
             Q(first_name__icontains=value) |
             Q(last_name__icontains=value)
+        )
+
+
+class MessagingFilter(FilterSet):
+    sender_receipient_search = CharFilter(
+        method='sender_receipient_filter', label='Sender Receipient Search'
+    )
+
+    class Meta:
+        model = Messaging
+        fields = [
+            'sender_receipient_search',
+            'message_id',
+            'message',
+            'sender__user_id',
+            'recipient__user_id',
+            'created_at',
+        ]
+
+    order_by = OrderingFilter(
+        fields=(
+            ('created_at', 'created_at'),
+        )
+    )
+
+    def sender_receipient_filter(self, queryset, name, value):
+        return Messaging.objects.filter(
+            Q(sender__user_id=value) |
+            Q(recipient__user_id=value)
         )

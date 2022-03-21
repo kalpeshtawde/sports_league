@@ -1,17 +1,20 @@
+import pytz
+import string
 import random
 from uuid import uuid4
-import pytz
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
+from factory import fuzzy
 
 from django.db import transaction
 from django.db.utils import IntegrityError
 from django.core.management import BaseCommand
 
 from tennis.factories import UserFactory, LeagueFactory, MatchRequestFactory,\
-    MessagingFactory, LeagueApplication
+    LeagueApplication
 from tennis.models import League, Match, MatchRequest, MatchSet
 from account.models import User
+from messaging.models import Messaging
 
 
 class Command(BaseCommand):
@@ -116,8 +119,16 @@ class Command(BaseCommand):
 
     def run_chat_factory(self):
         print(f"@@@@ Running for Chat Factory")
-        for i in range(1000):
-            MessagingFactory()
+        all_users = User.objects.all()
+        for sender in User.objects.all():
+            recipient = all_users[random.choice(range(all_users.count()))]
+            if sender != recipient:
+                m = Messaging(
+                    message=fuzzy.FuzzyText(length=20, chars=string.ascii_letters),
+                    sender=sender,
+                    recipient=recipient,
+                )
+                m.save()
 
     def handle(self, *args, **kwargs):
         self.stdout.write("Creating the new Things for our app")

@@ -1,4 +1,5 @@
 import string
+import random
 import factory
 import pytz
 from factory import fuzzy
@@ -10,6 +11,8 @@ from messaging.models import Messaging
 from tennis.models import League, Match, MatchRequest, MatchSet, \
     LeagueApplication
 
+
+users = User.objects.all()
 
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -53,18 +56,9 @@ class MatchRequestFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = MatchRequest
 
-    requested_by = factory.Iterator(User.objects.all())
-    accepted_by = factory.Iterator(User.objects.all())
+    requested_by = random.choice(users)
+    accepted_by = random.choice(users)
     format = fuzzy.FuzzyChoice(MatchRequest.MATCH_CHOICES, getter=lambda c: c[0])
     court = 'Gabriel Park, Portland'
     match_time = "16:00"
     league = factory.Iterator(League.objects.all())
-
-
-class MessagingFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = Messaging
-
-    message = fuzzy.FuzzyText(length=20, chars=string.ascii_letters)
-    sender = factory.Iterator(User.objects.all())
-    recipient = factory.Iterator(User.objects.all())

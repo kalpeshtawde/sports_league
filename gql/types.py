@@ -94,15 +94,7 @@ class MatchRequestType(DjangoObjectType):
 class MessagingType(DjangoObjectType):
     class Meta:
         model = Messaging
-        fields = "__all__"
         interfaces = (graphene.relay.Node,)
-        filter_fields = [
-            'message_id',
-            'message',
-            'sender__user_id',
-            'recipient__user_id',
-            'created_at',
-        ]
 
 
 class UserProfileType(graphene.ObjectType):
