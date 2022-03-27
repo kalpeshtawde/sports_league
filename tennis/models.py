@@ -197,7 +197,7 @@ class Match(models.Model):
         ("completed", "Completed"),
         ("draw", "Draw"),
         ("cancelled", "Cancelled"),
-        ("pending", "Pending"),
+        ("retire", "Retire"),
     ]
     match_status = models.CharField(
         db_index=True,
@@ -331,3 +331,40 @@ class MatchRequest(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     expiry_at = models.DateTimeField(default=in_seven_days)
+
+
+class Court(models.Model):
+    court_id = models.UUIDField(
+        default=uuid4,
+        unique=True,
+    )
+    name = models.CharField(
+        db_index=True,
+        max_length=255,
+        unique=True,
+    )
+    street = models.CharField(
+        db_index=True,
+        max_length=255,
+        unique=True,
+    )
+    city = models.CharField(
+        db_index=True,
+        max_length=255,
+        unique=True,
+    )
+    state = models.CharField(
+        db_index=True,
+        max_length=255,
+        unique=True,
+    )
+    zip = models.CharField(
+        db_index=True,
+        max_length=255,
+        unique=True,
+    )
+    type = models.CharField(
+        db_index=True,
+        max_length=255,
+        unique=True,
+    )

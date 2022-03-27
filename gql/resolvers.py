@@ -23,8 +23,8 @@ def resolve_league_stat(league_id):
            match.player_three_id,
            match.player_four_id,
            match.format,
-           match.winner_one_id,
-           match.winner_two_id,
+           match.winner_one_id as match_winner_one_id,
+           match.winner_two_id as match_winner_two_id,
            match.match_status,
            league.name,
            league.city,
@@ -35,8 +35,8 @@ def resolve_league_stat(league_id):
            league.level,
            league.description ,
            league.status,
-           league.winner_one_id,
-           league.winner_two_id
+           league.winner_one_id as league_winner_one_id,
+           league.winner_two_id as league_winner_two_id
         from
            tennis_match match 
            INNER JOIN
@@ -63,7 +63,7 @@ def resolve_league_stat(league_id):
                             'loss': 0,
                         }
 
-                    if row[field] in [row['winner_one_id'], row['winner_two_id']]:
+                    if row[field] in [row['match_winner_one_id'], row['match_winner_two_id']]:
                         user[row[field]]['won'] += 1
                     else:
                         user[row[field]]['loss'] += 1
@@ -73,8 +73,8 @@ def resolve_league_stat(league_id):
                 data['name'] = row['name']
                 data['city'] = row['city']
                 data['state'] = row['state']
-                data['winner_one_id'] = row['winner_one_id']
-                data['winner_two_id'] = row['winner_two_id']
+                data['winner_one_id'] = row['match_winner_one_id']
+                data['winner_two_id'] = row['match_winner_two_id']
                 data['country'] = row['country']
                 data['start_date'] = row['start_date']
                 data['end_date'] = row['end_date']
