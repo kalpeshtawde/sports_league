@@ -64,6 +64,7 @@ class LeagueApplicationType(DjangoObjectType):
             'league__league_id',
             'league__city',
             'league__state',
+            'league__status',
             'applicant__user_id',
             'applicant',
             'status',
