@@ -49,7 +49,7 @@ class UserFilter(FilterSet):
             'email',
             'gender',
             'height',
-            'level',
+            'rating',
             'phone',
             'city',
             'state',

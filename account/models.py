@@ -97,11 +97,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         null=True,
         help_text="Height of the person",
     )
-    level = models.FloatField(
-        blank=True,
-        null=True,
-        help_text="Level of the person",
-    )
     phone = models.CharField(
         max_length=255,
         blank=True,

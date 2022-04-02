@@ -25,7 +25,6 @@ class UserFactory(factory.django.DjangoModelFactory):
     )
     gender = fuzzy.FuzzyChoice(User.GENDER_CHOICES, getter=lambda c: c[0])
     height = fuzzy.FuzzyInteger(3, 8)
-    level = fuzzy.FuzzyInteger(1, 10)
     phone = factory.Sequence(lambda n: '123-555-%04d' % n)
     city = "Portland"
     state = "Oregon"

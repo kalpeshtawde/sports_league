@@ -63,7 +63,7 @@ DEFAULTS['UPDATE_MUTATION_FIELDS'] = [
     'is_active',
     'gender',
     'height',
-    'level',
+    'rating',
     'phone',
     'picture',
     'city',
