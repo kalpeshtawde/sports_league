@@ -56,6 +56,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 DEFAULTS['UPDATE_MUTATION_FIELDS'] = [
+    'user_id',
     'first_name',
     'last_name',
     'is_staff',
