@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 from datetime import timedelta
 from graphql_auth.settings import DEFAULTS
@@ -84,7 +84,11 @@ DEFAULTS['USER_NODE_FILTER_FIELDS'] = {
     'status__verified': ['exact'],
     'status__secondary_email': ['exact'],
 }
-GRAPHQL_AUTH = DEFAULTS
+
+GRAPHQL_AUTH = {
+    'LOGIN_ALLOWED_FIELDS': ['email', 'username'],
+    "EMAIL_FROM": 'noreply@leagueoftennis.com',
+}
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -133,7 +137,7 @@ ROOT_URLCONF = 'sports_league.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
