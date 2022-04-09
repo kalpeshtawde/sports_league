@@ -87,7 +87,7 @@ DEFAULTS['USER_NODE_FILTER_FIELDS'] = {
 
 GRAPHQL_AUTH = {
     'LOGIN_ALLOWED_FIELDS': ['email', 'username'],
-    "EMAIL_FROM": 'noreply@leagueoftennis.com',
+    'EMAIL_FROM': 'noreply@leagueoftennis.com',
 }
 
 
