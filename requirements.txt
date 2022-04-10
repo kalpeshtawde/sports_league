@@ -7,3 +7,4 @@ django-filter
 django-graphql-jwt==0.3.0
 django-graphql-auth
 Pillow==9.0.1
+graphqlclient==0.2.4

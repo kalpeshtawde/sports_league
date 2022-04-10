@@ -18,7 +18,7 @@ from graphene_django.views import GraphQLView
 from django.views.decorators.csrf import csrf_exempt
 from gql.schema import schema
 
-from account.views import LoginView, RegisterView
+from account.views import LoginView, RegisterView, activate
 
 
 GraphQLView.graphiql_template = "graphene_graphiql_explorer/graphiql.html"
@@ -28,5 +28,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', LoginView.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),
+    path('activate/<token>', activate, name='activate'),
     path("graphql/", csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema)), name="graphiql"),
 ]
