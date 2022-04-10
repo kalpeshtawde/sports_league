@@ -86,12 +86,16 @@ DEFAULTS['USER_NODE_FILTER_FIELDS'] = {
 }
 
 GRAPHQL_AUTH = {
-    'LOGIN_ALLOWED_FIELDS': ['email', 'username'],
+    'LOGIN_ALLOWED_FIELDS': ['email'],
     'EMAIL_FROM': 'noreply@leagueoftennis.com',
+    'SEND_ACTIVATION_EMAIL': True,
 }
 
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp-relay.sendinblue.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'kalpeshtawde@outlook.com'
+EMAIL_HOST_PASSWORD = 'ErTHPdfqxZFSh719'
 
 
 GRAPHQL_JWT = {
