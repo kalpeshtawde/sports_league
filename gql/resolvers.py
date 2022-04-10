@@ -156,10 +156,22 @@ def resolve_user_profiles(user_id):
         WHERE  match_status IN ( 'draw' )
                AND usr.user_id = %s
         GROUP  BY usr.user_id, usr.city, usr.state, usr.dob, usr.first_name, usr.last_name
+        UNION
+        SELECT usr.user_id,
+               usr.city,
+               usr.state,
+               usr.dob,
+               usr.first_name,
+               usr.last_name,
+               Count(usr.user_id) AS total,
+               'test'        AS result
+        FROM   account_user usr
+        WHERE usr.user_id = %s
+        GROUP  BY usr.user_id, usr.city, usr.state, usr.dob, usr.first_name, usr.last_name
     """
     data = {}
     with connection.cursor() as cursor:
-        cursor.execute(query, [user_id, user_id, user_id])
+        cursor.execute(query, [user_id, user_id, user_id, user_id])
         result = dictfetchall(cursor)
         for row in result:
             data['user_id'] = row['user_id']
@@ -170,9 +182,11 @@ def resolve_user_profiles(user_id):
             data['state'] = row['state']
             data[f"{row['result']}_count"] = row['total']
 
-    data['lost_count'] = data['matches_count'] - data['won_count'] - data['draw_count']
+    if 'matches_count' in data:
+        data['lost_count'] = data['matches_count'] - data['won_count'] - data['draw_count']
 
-    days_in_year = 365.2425
-    data['age'] = int((date.today() - data['dob']).days / days_in_year)
+    if 'dob' in data and data['dob']:
+        days_in_year = 365.2425
+        data['age'] = int((date.today() - data['dob']).days / days_in_year)
 
     return data
