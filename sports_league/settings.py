@@ -95,7 +95,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp-relay.sendinblue.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'kalpeshtawde@outlook.com'
-EMAIL_HOST_PASSWORD = 'ErTHPdfqxZFSh719'
+EMAIL_HOST_PASSWORD = os.environ.get('SMTP_PASSWORD', '')
 
 
 GRAPHQL_JWT = {
