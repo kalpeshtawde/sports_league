@@ -95,6 +95,7 @@ class MatchRequestType(DjangoObjectType):
 class MessagingType(DjangoObjectType):
     class Meta:
         model = Messaging
+        fields = "__all__"
         interfaces = (graphene.relay.Node,)
 
 
@@ -189,3 +190,9 @@ class MatchInput(graphene.InputObjectType):
     set_3 = MatchSetInput()
     set_4 = MatchSetInput()
     set_5 = MatchSetInput()
+
+
+class MessagingInput(graphene.InputObjectType):
+    sender = graphene.String()
+    recipient = graphene.String()
+    message = graphene.String()

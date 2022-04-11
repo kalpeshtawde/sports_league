@@ -3,11 +3,12 @@ from uuid import uuid4
 
 from gql.types import UserType, LeagueType, MatchType, LeagueApplicationType, \
     MatchRequestType, MessagingType, UserProfileType, MatchSetType, \
-    LeagueInput, MatchRequestInput, MatchInput, LeagueStatType
+    LeagueInput, MatchRequestInput, MatchInput, LeagueStatType, MessagingInput
 from gql.resolvers import resolve_user_profiles, resolve_league_stat
 from gql.filters import MatchFilter, UserFilter, MessagingFilter
 from tennis.models import League, Match, MatchRequest, MatchSet
 from account.models import User
+from messaging.models import Messaging
 
 from graphql_auth.schema import UserQuery, MeQuery
 from graphene_django.filter import DjangoFilterConnectionField
@@ -245,10 +246,34 @@ class CreateMatchRequest(graphene.Mutation):
         return CreateMatchRequest(match_request=match_request)
 
 
+class SendMessage(graphene.Mutation):
+    class Arguments:
+        input = MessagingInput(required=True)
+
+    messaging = graphene.Field(MessagingType)
+
+    @classmethod
+    def mutate(cls, root, info, input):
+        users = User.objects.filter(
+            user_id__in=[input.sender, input.recipient]
+        )
+        message = Messaging()
+        for user in users:
+            if str(user.user_id) == str(input.sender):
+                message.sender = user
+            else:
+                message.recipient = user
+        message.message = input.message
+        message.save()
+
+        return SendMessage(messaging=message)
+
+
 class Mutation(AuthMutation, graphene.ObjectType):
     league = CreateLeague.Field()
     match_request = CreateMatchRequest.Field()
     submit_score = SubmitScore.Field()
+    send_message = SendMessage.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
