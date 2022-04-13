@@ -1,5 +1,6 @@
 import graphene
 from uuid import uuid4
+from graphene_file_upload.scalars import Upload
 
 from gql.types import UserType, LeagueType, MatchType, LeagueApplicationType, \
     MatchRequestType, MessagingType, UserProfileType, MatchSetType, \
@@ -269,11 +270,24 @@ class SendMessage(graphene.Mutation):
         return SendMessage(messaging=message)
 
 
+class UploadMutation(graphene.Mutation):
+    class Arguments:
+        file = Upload(required=True)
+
+    success = graphene.Boolean()
+
+    def mutate(self, info, file, **kwargs):
+        # do something with your file
+        print(file)
+        return UploadMutation(success=True)
+
+
 class Mutation(AuthMutation, graphene.ObjectType):
     league = CreateLeague.Field()
     match_request = CreateMatchRequest.Field()
     submit_score = SubmitScore.Field()
     send_message = SendMessage.Field()
+    upload_image = UploadMutation.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

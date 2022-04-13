@@ -15,7 +15,7 @@ services:
   web:
     build: .
     command: >
-        sh -c "/wait-for-it.sh db:5432 -- python manage.py migrate && sleep 5 && 
+        sh -c "/wait-for-it.sh db:5432 -- python manage.py migrate && sleep 10 && 
               python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
