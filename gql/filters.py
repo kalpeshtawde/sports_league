@@ -88,7 +88,14 @@ class MessagingFilter(FilterSet):
     )
 
     def sender_receipient_filter(self, queryset, name, value):
-        return Messaging.objects.filter(
-            Q(sender__user_id=value) |
-            Q(recipient__user_id=value)
-        )
+        if '|' in value:
+            user_id = value.split('|')
+            return Messaging.objects.filter(
+                (Q(sender__user_id=user_id[0]) | Q(recipient__user_id=user_id[0])) &
+                (Q(sender__user_id=user_id[1]) | Q(recipient__user_id=user_id[1]))
+            )
+        else:
+            return Messaging.objects.filter(
+                Q(sender__user_id=value) |
+                Q(recipient__user_id=value)
+            )
