@@ -15,7 +15,7 @@ from graphql_auth.schema import UserQuery, MeQuery
 from graphene_django.filter import DjangoFilterConnectionField
 from graphql_auth import mutations
 from graphql import GraphQLError
-
+from common.StoreFile import StoreFile
 
 # Query
 class Query(UserQuery, graphene.ObjectType):
@@ -270,24 +270,28 @@ class SendMessage(graphene.Mutation):
         return SendMessage(messaging=message)
 
 
-class UploadMutation(graphene.Mutation):
+class FileUpload(graphene.Mutation):
     class Arguments:
         file = Upload(required=True)
-
     success = graphene.Boolean()
-
     def mutate(self, info, file, **kwargs):
-        # do something with your file
-        print(file)
-        return UploadMutation(success=True)
+        response = file_upload(file)
+        return FileUpload(response)
 
+# Function to handle File Upload
+def file_upload(file):
+    if file:
+        storeFiles = StoreFile()
+        return storeFiles.store_files(file)
+
+    return False
 
 class Mutation(AuthMutation, graphene.ObjectType):
     league = CreateLeague.Field()
     match_request = CreateMatchRequest.Field()
     submit_score = SubmitScore.Field()
     send_message = SendMessage.Field()
-    upload_image = UploadMutation.Field()
+    upload_image = FileUpload.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
