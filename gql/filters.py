@@ -25,6 +25,12 @@ class MatchFilter(FilterSet):
             'winner_two',
         ]
 
+    order_by = OrderingFilter(
+        fields=(
+            ('created_at', 'created_at'),
+        )
+    )
+
     def user_filter(self, queryset, name, value):
         return Match.objects.filter(
             Q(player_one__user_id=value) |
