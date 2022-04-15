@@ -276,6 +276,8 @@ class FileUpload(graphene.Mutation):
     success = graphene.Boolean()
     def mutate(self, info, file, **kwargs):
         response = file_upload(file)
+        print(response)
+        # Logic for Model save
         return FileUpload(response)
 
 # Function to handle File Upload

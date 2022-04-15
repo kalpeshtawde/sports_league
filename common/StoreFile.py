@@ -33,4 +33,8 @@ class StoreFile:
             file_directory = str(settings.BASE_DIR) + str(Path('/uploadedFiles/'))
         file_name = file_directory + '/' + file_name + '_' + self.get_current_datetime_string() + '.' + ext
         fileUrl = default_storage.save(file_name, file)
-        return fileUrl
+        fileResponse = {}
+        fileResponse['fileName'] = file_name
+        fileResponse['fileUrl'] = fileUrl
+        fileResponse['fileExtension'] = ext
+        return fileResponse
