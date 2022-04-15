@@ -24,12 +24,11 @@ class StoreFile:
                filename.rsplit('.', 1)[0].lower()
 
     def store_files(self, file, file_name=None, ext=None, file_directory=None):
-        print(file_name)
         """ Function to store files """
         if file_name is None:
-            file_name = self.get_file_name(file.filename)
+            file_name = self.get_file_name(file.name)
         if ext is None:
-            ext = self.get_file_ext(file.filename)
+            ext = self.get_file_ext(file.name)
         if file_directory is None:
             file_directory = str(settings.BASE_DIR) + str(Path('/uploadedFiles/'))
         file_name = file_directory + '/' + file_name + '_' + self.get_current_datetime_string() + '.' + ext
