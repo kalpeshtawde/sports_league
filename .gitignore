@@ -3,3 +3,4 @@
 *.env
 config/*
 profileImages/*
+static/profileImages/*

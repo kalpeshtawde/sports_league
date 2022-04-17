@@ -31,7 +31,7 @@ class StoreFile:
         if ext is None:
             ext = self.get_file_ext(file.name)
         if file_directory is None:
-            file_directory = str(settings.BASE_DIR) + str(Path('/profileImages/'))
+            file_directory = str(settings.BASE_DIR) + str(Path('/static/profileImages/'))
         file_name = file_directory + '/' + str(uuid4()) + '.' + ext
         fileUrl = default_storage.save(file_name, file)
         fileResponse = {}
