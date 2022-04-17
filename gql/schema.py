@@ -273,11 +273,17 @@ class SendMessage(graphene.Mutation):
 class FileUpload(graphene.Mutation):
     class Arguments:
         file = Upload(required=True)
+        userid = graphene.String()
     success = graphene.Boolean()
-    def mutate(self, info, file, **kwargs):
+    def mutate(self, info, file, userid, **kwargs):
         response = file_upload(file)
-        print(response)
-        # Logic for Model save
+        response['userid'] = userid
+        try:
+            user = User.objects.filter(user_id=userid).first()
+            user.picture = response["fileUrl"]
+            user.save()
+        except Exception as e:
+            raise GraphQLError(f"Failed saving image for user {userid}, error {e}")
         return FileUpload(response)
 
 # Function to handle File Upload

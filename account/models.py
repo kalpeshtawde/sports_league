@@ -104,7 +104,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         help_text="Phone number of the person",
     )
     picture = models.CharField(
-        max_length=255,
+        max_length=1000,
         blank=True,
         null=True,
     )

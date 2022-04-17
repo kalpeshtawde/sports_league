@@ -1,4 +1,5 @@
 from datetime import datetime
+from uuid import uuid4
 from pathlib import Path
 from sports_league import settings
 from django.core.files.base import ContentFile
@@ -30,8 +31,8 @@ class StoreFile:
         if ext is None:
             ext = self.get_file_ext(file.name)
         if file_directory is None:
-            file_directory = str(settings.BASE_DIR) + str(Path('/uploadedFiles/'))
-        file_name = file_directory + '/' + file_name + '_' + self.get_current_datetime_string() + '.' + ext
+            file_directory = str(settings.BASE_DIR) + str(Path('/profileImages/'))
+        file_name = file_directory + '/' + str(uuid4()) + '.' + ext
         fileUrl = default_storage.save(file_name, file)
         fileResponse = {}
         fileResponse['fileName'] = file_name
