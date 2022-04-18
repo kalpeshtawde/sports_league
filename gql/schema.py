@@ -2,12 +2,10 @@ import graphene
 from uuid import uuid4
 from graphene_file_upload.scalars import Upload
 
-from gql.types import UserType, LeagueType, MatchType, LeagueApplicationType, \
-    MatchRequestType, MessagingType, UserProfileType, MatchSetType, \
-    LeagueInput, MatchRequestInput, MatchInput, LeagueStatType, MessagingInput
+from gql.types import *
 from gql.resolvers import resolve_user_profiles, resolve_league_stat
 from gql.filters import MatchFilter, UserFilter, MessagingFilter
-from tennis.models import League, Match, MatchRequest, MatchSet
+from tennis.models import League, Match, MatchRequest, MatchSet, UserEnquiry
 from account.models import User
 from messaging.models import Messaging
 
@@ -29,6 +27,7 @@ class Query(UserQuery, graphene.ObjectType):
     all_league_applications = DjangoFilterConnectionField(LeagueApplicationType)
     all_messaging = DjangoFilterConnectionField(
         MessagingType, filterset_class=MessagingFilter)
+    all_user_query = DjangoFilterConnectionField(UserQueryType)
     user_profiles = graphene.Field(
         UserProfileType,
         user_id=graphene.String(required=True),
@@ -270,11 +269,32 @@ class SendMessage(graphene.Mutation):
         return SendMessage(messaging=message)
 
 
+class UserQueryMutation(graphene.Mutation):
+    class Arguments:
+        user_id = graphene.String()
+        message = graphene.String()
+
+    user_query = graphene.Field(UserQueryType)
+
+    @classmethod
+    def mutate(cls, root, info, user_id, message):
+        user = User.objects.filter(
+            user_id=user_id,
+        ).first()
+        query = UserEnquiry()
+        query.userid = user
+        query.message = message
+        query.save()
+
+        return UserQueryMutation(user_query=query)
+
+
 class FileUpload(graphene.Mutation):
     class Arguments:
         file = Upload(required=True)
         userid = graphene.String()
     success = graphene.Boolean()
+
     def mutate(self, info, file, userid, **kwargs):
         response = file_upload(file)
         response['userid'] = userid
@@ -299,6 +319,7 @@ class Mutation(AuthMutation, graphene.ObjectType):
     match_request = CreateMatchRequest.Field()
     submit_score = SubmitScore.Field()
     send_message = SendMessage.Field()
+    user_query = UserQueryMutation.Field()
     upload_image = FileUpload.Field()
 
 

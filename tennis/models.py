@@ -368,3 +368,19 @@ class Court(models.Model):
         max_length=255,
         unique=True,
     )
+
+
+class UserEnquiry(models.Model):
+    userid = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='user_query',
+        to_field='user_id',
+        null=True,
+        blank=True,
+    )
+
+    message = models.TextField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

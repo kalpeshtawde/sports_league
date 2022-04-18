@@ -1,7 +1,8 @@
 from graphene_django import DjangoObjectType
 import graphene
 
-from tennis.models import League, Match, LeagueApplication, MatchRequest, MatchSet
+from tennis.models import League, Match, LeagueApplication, MatchRequest, \
+    MatchSet, UserEnquiry
 from messaging.models import Messaging
 from account.models import User
 
@@ -96,6 +97,14 @@ class MessagingType(DjangoObjectType):
     class Meta:
         model = Messaging
         fields = "__all__"
+        interfaces = (graphene.relay.Node,)
+
+
+class UserQueryType(DjangoObjectType):
+    class Meta:
+        model = UserEnquiry
+        fields = "__all__"
+        filter_fields = "__all__"
         interfaces = (graphene.relay.Node,)
 
 
@@ -195,4 +204,9 @@ class MatchInput(graphene.InputObjectType):
 class MessagingInput(graphene.InputObjectType):
     sender = graphene.String()
     recipient = graphene.String()
+    message = graphene.String()
+
+
+class UserQueryInput(graphene.InputObjectType):
+    userid = graphene.String()
     message = graphene.String()
