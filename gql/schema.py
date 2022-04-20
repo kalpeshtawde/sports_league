@@ -5,7 +5,8 @@ from graphene_file_upload.scalars import Upload
 from gql.types import *
 from gql.resolvers import resolve_user_profiles, resolve_league_stat
 from gql.filters import MatchFilter, UserFilter, MessagingFilter
-from tennis.models import League, Match, MatchRequest, MatchSet, UserEnquiry
+from tennis.models import League, Match, MatchRequest, MatchSet, UserEnquiry, \
+    LeagueApplication
 from account.models import User
 from messaging.models import Messaging
 
@@ -289,6 +290,29 @@ class UserQueryMutation(graphene.Mutation):
         return UserQueryMutation(user_query=query)
 
 
+class LeagueApplicationMutation(graphene.Mutation):
+    class Arguments:
+        user_id = graphene.String()
+        league_id = graphene.String()
+
+    league_application = graphene.Field(LeagueApplicationType)
+
+    @classmethod
+    def mutate(cls, root, info, user_id, league_id):
+        user = User.objects.filter(
+            user_id=user_id,
+        ).first()
+        league = League.objects.filter(
+           league_id=league_id,
+        ).first()
+        league_app = LeagueApplication()
+        league_app.league = league
+        league_app.applicant = user
+        league_app.save()
+
+        return LeagueApplicationMutation(league_application=league_app)
+
+
 class FileUpload(graphene.Mutation):
     class Arguments:
         file = Upload(required=True)
@@ -314,6 +338,7 @@ def file_upload(file):
 
     return False
 
+
 class Mutation(AuthMutation, graphene.ObjectType):
     league = CreateLeague.Field()
     match_request = CreateMatchRequest.Field()
@@ -321,6 +346,7 @@ class Mutation(AuthMutation, graphene.ObjectType):
     send_message = SendMessage.Field()
     user_query = UserQueryMutation.Field()
     upload_image = FileUpload.Field()
+    league_application = LeagueApplicationMutation.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
