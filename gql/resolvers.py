@@ -84,14 +84,17 @@ def resolve_league_stat(league_id):
                 data['format'] = row['format']
 
     user_name_map = {}
+    user_picture_map = {}
     for u in User.objects.filter(user_id__in=user.keys()):
         user_name_map[u.user_id] = f"{u.first_name} {u.last_name}"
+        user_picture_map[u.user_id] = u.picture
 
     data['user_stat'] = []
     for u in user.keys():
         data['user_stat'].append(
             {
                 "user_name": user_name_map[u],
+                "picture": user_picture_map[u],
                 "user_id": u,
                 "total": user[u]['total'],
                 "won": user[u]['won'],
@@ -111,6 +114,7 @@ def resolve_user_profiles(user_id):
                usr.dob,
                usr.first_name,
                usr.last_name,
+               usr.picture,
                Count(usr.user_id) AS total,
                'matches'     AS result
         FROM   account_user usr
@@ -121,7 +125,7 @@ def resolve_user_profiles(user_id):
                                   OR usr.user_id = match.player_four_id )
         WHERE  match_status IN ( 'completed', 'draw' )
                AND usr.user_id = %s
-        GROUP  BY usr.user_id, usr.city, usr.state, usr.dob, usr.first_name, usr.last_name
+        GROUP  BY usr.user_id, usr.city, usr.state, usr.dob, usr.first_name, usr.last_name, usr.picture
         UNION
         SELECT usr.user_id,
                usr.city,
@@ -129,6 +133,7 @@ def resolve_user_profiles(user_id):
                usr.dob,
                usr.first_name,
                usr.last_name,
+               usr.picture,
                Count(usr.user_id) AS total,
                'won'         AS result
         FROM   account_user usr
@@ -137,7 +142,7 @@ def resolve_user_profiles(user_id):
                                   OR usr.user_id = match.winner_two_id )
         WHERE  match_status IN ( 'completed' )
                AND usr.user_id = %s
-        GROUP  BY usr.user_id, usr.city, usr.state, usr.dob, usr.first_name, usr.last_name
+        GROUP  BY usr.user_id, usr.city, usr.state, usr.dob, usr.first_name, usr.last_name, usr.picture
         UNION
         SELECT usr.user_id,
                usr.city,
@@ -145,6 +150,7 @@ def resolve_user_profiles(user_id):
                usr.dob,
                usr.first_name,
                usr.last_name,
+               usr.picture,
                Count(usr.user_id) AS total,
                'draw'        AS result
         FROM   account_user usr
@@ -155,7 +161,7 @@ def resolve_user_profiles(user_id):
                                   OR usr.user_id = match.player_four_id )
         WHERE  match_status IN ( 'draw' )
                AND usr.user_id = %s
-        GROUP  BY usr.user_id, usr.city, usr.state, usr.dob, usr.first_name, usr.last_name
+        GROUP  BY usr.user_id, usr.city, usr.state, usr.dob, usr.first_name, usr.last_name, usr.picture
         UNION
         SELECT usr.user_id,
                usr.city,
@@ -163,11 +169,12 @@ def resolve_user_profiles(user_id):
                usr.dob,
                usr.first_name,
                usr.last_name,
+               usr.picture,
                Count(usr.user_id) AS total,
                'test'        AS result
         FROM   account_user usr
         WHERE usr.user_id = %s
-        GROUP  BY usr.user_id, usr.city, usr.state, usr.dob, usr.first_name, usr.last_name
+        GROUP  BY usr.user_id, usr.city, usr.state, usr.dob, usr.first_name, usr.last_name, usr.picture
     """
     data = {}
     with connection.cursor() as cursor:
@@ -177,6 +184,7 @@ def resolve_user_profiles(user_id):
             data['user_id'] = row['user_id']
             data['first_name'] = row['first_name']
             data['last_name'] = row['last_name']
+            data['picture'] = row['picture']
             data['dob'] = row['dob']
             data['city'] = row['city']
             data['state'] = row['state']
