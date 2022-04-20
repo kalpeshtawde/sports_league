@@ -121,11 +121,13 @@ class UserProfileType(graphene.ObjectType):
     dob = graphene.Date()
     age = graphene.Int()
     picture = graphene.String()
+    rating = graphene.String()
 
 
 class LeagueUserStatType(graphene.ObjectType):
     user_name = graphene.String()
     picture = graphene.String()
+    rating = graphene.String()
     user_id = graphene.String()
     total = graphene.Int()
     won = graphene.Int()
