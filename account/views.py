@@ -43,3 +43,28 @@ def activate(request, token):
     }
     template = loader.get_template('account/activate.html')
     return HttpResponse(template.render(context, request))
+
+
+def password_reset(request, token):
+    #client = GraphQLClient('http://0.0.0.0:8000/graphql/')
+    #query = """
+    #    mutation VerifyAccount($input: String!){
+    #      verifyAccount(token: $input) {
+    #        errors
+    #        success
+    #      }
+    #    }
+    #"""
+    #variables = {'input': token}
+    #result = client.execute(query, variables)
+    #result_json = json.loads(result)
+    #if result_json['data']['verifyAccount']['success']:
+    #    message = "Congratulation! Your account has been activated"
+    #else:
+    #    message = "Activation link is expired. Please use app to resend activation link!"
+    #context = {
+    #    'message': message,
+    #}
+    context = {}
+    template = loader.get_template('account/password_reset.html')
+    return HttpResponse(template.render(context, request))
