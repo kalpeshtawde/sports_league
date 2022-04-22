@@ -46,25 +46,40 @@ def activate(request, token):
 
 
 def password_reset(request, token):
-    #client = GraphQLClient('http://0.0.0.0:8000/graphql/')
-    #query = """
-    #    mutation VerifyAccount($input: String!){
-    #      verifyAccount(token: $input) {
-    #        errors
-    #        success
-    #      }
-    #    }
-    #"""
-    #variables = {'input': token}
-    #result = client.execute(query, variables)
-    #result_json = json.loads(result)
-    #if result_json['data']['verifyAccount']['success']:
-    #    message = "Congratulation! Your account has been activated"
-    #else:
-    #    message = "Activation link is expired. Please use app to resend activation link!"
-    #context = {
-    #    'message': message,
-    #}
-    context = {}
+    message = ''
+    messageStatus = False
+    if request.method =='POST':
+        password1 = request.POST.get('password1','')
+        password2 = request.POST.get('password2','')
+        client = GraphQLClient('http://0.0.0.0:8000/graphql/')
+        query = """
+           mutation PasswordReset($password1: String!, $password2:String!, $token:String!){
+             passwordReset(newPassword1: $password1, newPassword2: $password2, token: $token) {
+               errors
+               success
+             }
+           }
+        """        
+        variables = {'token': token, 'password1':password1, 'password2':password2}
+        result = client.execute(query, variables)
+        result_json = json.loads(result)
+        if result_json['data']['passwordReset']['success']:
+           message = "Your password has been set."
+           messageStatus = True
+        elif result_json['data']['passwordReset']['errors']:
+            if 'nonFieldErrors' in result_json['data']['passwordReset']['errors']:
+                message = result_json['data']['passwordReset']['errors']['nonFieldErrors'][0]['message']
+            elif 'newPassword2' in result_json['data']['passwordReset']['errors']:
+                message = result_json['data']['passwordReset']['errors']['newPassword2'][0]['message']            
+            else:
+                message = "Something Went Wrong. Try Again!"
+        else:
+           message = "Link is expired!"
+    context = {
+       'messageStatus': messageStatus,
+       'message': message,
+       'token': token,
+    }
     template = loader.get_template('account/password_reset.html')
     return HttpResponse(template.render(context, request))
+
