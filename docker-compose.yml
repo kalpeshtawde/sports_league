@@ -8,6 +8,7 @@ services:
     environment:
       - PRODUCTION=false
       - POSTGRES_HOST_AUTH_METHOD=trust
+      - PGDATA=/var/lib/pg_data
     env_file:
       - ./config/.env.dev
     ports:
@@ -15,7 +16,7 @@ services:
   web:
     build: .
     command: >
-        sh -c "/wait-for-it.sh db:5432 -- python manage.py migrate && sleep 20 && 
+        sh -c "/wait-for-it.sh db:5432 -- python manage.py migrate && 
               python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
