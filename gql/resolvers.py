@@ -198,6 +198,11 @@ def resolve_user_profiles(user_id):
             data['state'] = row['state']
             data[f"{row['result']}_count"] = row['total']
 
+    for type in ['matches', 'won', 'draw', 'test']:
+        type = f"{type}_count"
+        if type not in data or data[type] is None:
+            data[type] = 0
+
     if 'matches_count' in data:
         data['lost_count'] = data['matches_count'] - data['won_count'] - data['draw_count']
 

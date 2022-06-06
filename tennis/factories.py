@@ -14,6 +14,7 @@ from tennis.models import League, Match, MatchRequest, MatchSet, \
 
 users = User.objects.all()
 
+
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
@@ -51,13 +52,13 @@ class LeagueFactory(factory.django.DjangoModelFactory):
     status = fuzzy.FuzzyChoice(["ongoing", "completed"])
 
 
-class MatchRequestFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = MatchRequest
-
-    requested_by = random.choice(users)
-    accepted_by = random.choice(users)
-    format = fuzzy.FuzzyChoice(MatchRequest.MATCH_CHOICES, getter=lambda c: c[0])
-    court = 'Gabriel Park, Portland'
-    match_time = "16:00"
-    league = factory.Iterator(League.objects.all())
+# class MatchRequestFactory(factory.django.DjangoModelFactory):
+#     class Meta:
+#         model = MatchRequest
+#
+#     requested_by = random.choice(users)
+#     accepted_by = random.choice(users)
+#     format = fuzzy.FuzzyChoice(MatchRequest.MATCH_CHOICES, getter=lambda c: c[0])
+#     court = 'Gabriel Park, Portland'
+#     match_time = "16:00"
+#     league = factory.Iterator(League.objects.all())

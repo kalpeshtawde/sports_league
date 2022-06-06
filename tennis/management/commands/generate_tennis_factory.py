@@ -10,7 +10,7 @@ from django.db import transaction
 from django.db.utils import IntegrityError
 from django.core.management import BaseCommand
 
-from tennis.factories import UserFactory, LeagueFactory, MatchRequestFactory,\
+from tennis.factories import UserFactory, LeagueFactory, \
     LeagueApplication
 from tennis.models import League, Match, MatchRequest, MatchSet
 from account.models import User
@@ -137,5 +137,5 @@ class Command(BaseCommand):
         self.run_league_factory()
         self.run_league_applications_factory()
         self.run_match_factory()
-        self.run_match_request_factory()
+        #self.run_match_request_factory()
         self.run_chat_factory()
